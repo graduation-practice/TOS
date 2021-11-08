@@ -1,6 +1,6 @@
 # 我们将会用一个宏来用循环保存寄存器。这是必要的设置
 .altmacro
-.set    REG_SIZE, 8             # 寄存器宽度对应的字节数
+.set    REG_SIZE, 8             # 寄存器宽度对应的字节数 64bits 对应8bytes
 .set    TRAP_FRAME_SIZE, 34     # TrapFrame 的大小
 
 # 宏：将寄存器存到栈上

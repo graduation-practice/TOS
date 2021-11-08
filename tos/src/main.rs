@@ -1,7 +1,7 @@
 #![no_std]
 #![no_main]
 #![feature(global_asm)]
-
+#![feature(asm)]
 use tos;
 use tos::{println};
 global_asm!(include_str!("boot/entry.asm"));
@@ -39,6 +39,10 @@ pub fn rust_main() -> ! {
     );
     println!(".bss [{:#x}, {:#x})", sbss as usize, ebss as usize);
     // panic!("Shutdown machine!");
+    tos::arch::interrupt::init();
+    tos::arch::timer::init();
+    // panic!("end of rust_main");
+
     loop{};
 }
 
