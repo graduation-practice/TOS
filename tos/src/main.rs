@@ -42,7 +42,7 @@ pub fn rust_main() -> ! {
     tos::arch::interrupt::init();
     tos::arch::timer::init();
     // panic!("end of rust_main");
-
+    //
     loop{};
 }
 
