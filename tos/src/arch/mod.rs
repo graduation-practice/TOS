@@ -1,9 +1,7 @@
-pub mod timer;
-pub mod sbi;
-pub mod interrupt;
-pub mod context;
 pub mod config;
-use riscv::register::{
-    sstatus::Sstatus,
-    scause::Scause,
-};
+pub mod context;
+pub mod sbi;
+pub mod timer;
+pub mod trap;
+use riscv::register::{scause::Scause, sstatus::Sstatus};
+//TODO 统一底层接口

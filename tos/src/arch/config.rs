@@ -14,6 +14,8 @@ pub const KERNEL_HEAP_SIZE: usize = 0x30_0000;
 pub const MEMORY_START: usize = 0xFFFF_FFC0_8000_0000;
 /// 内存大小
 pub const MEMORY_SIZE: usize = 0x80_0000;
+
+pub const MEMORY_END: usize = 0x8080_0000;
 /// PAGE_SIZE = 1 << PAGE_SIZE_BITS
 pub const PAGE_SIZE_BITS: usize = 12;
 /// MMIO 起始地址
@@ -22,3 +24,4 @@ pub const MMIO: [(usize, usize); 1] = [(0x10001000, 0x1000)];
 pub const CLOCK_FREQ: u64 = 10_000_000;
 /// boot cpu id
 pub const BOOT_CPU_ID: usize = 0;
+pub const PAGE_SIZE: usize = 0x1000;

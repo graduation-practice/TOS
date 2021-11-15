@@ -4,8 +4,11 @@
 #![feature(asm)]
 #![feature(global_asm)]
 #![feature(panic_info_message)]
+#![feature(alloc_error_handler)]
+extern crate alloc;
 #[macro_use]
 pub mod console;
-mod lang_items;
+pub mod arch;
 mod init;
-pub mod arch; 
+pub mod kernel;
+mod lang_items;

@@ -1,8 +1,8 @@
 //TODO 完善时钟中断 双核
-use riscv::register::{sie,time};
-use core::time::Duration;
 use super::sbi::set_timer;
 use crate::arch::config::CLOCK_FREQ;
+use core::time::Duration;
+use riscv::register::{sie, time};
 
 // 时钟中断计数
 pub static mut TICKS: u64 = 0;
@@ -13,8 +13,7 @@ const USEC_PER_SEC: u64 = 1_000_000;
 const NSEC_PER_SEC: u64 = 1_000_000_000;
 
 // 时钟中断间隔
-pub const INTERVAL: u64 = CLOCK_FREQ / TICKS_PER_SEC -1 ;
-
+pub const INTERVAL: u64 = CLOCK_FREQ / TICKS_PER_SEC - 1;
 
 // 初始化时钟中断
 pub fn init() {
@@ -37,12 +36,9 @@ pub fn tick() {
             println!("{} s", TICKS / TICKS_PER_SEC);
         }
     }
-
 }
 
 #[inline]
 pub fn set_next_timeout() {
-
     set_timer(time::read() + INTERVAL as usize);
 }
-

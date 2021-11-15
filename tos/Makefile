@@ -12,7 +12,8 @@ env:
 	rustup component add llvm-tools-preview rustfmt
 	rustup target add $(target)
 kernel:
-	cargo build 
+#	cargo build -Z build-std=core
+	cargo build
 build: kernel
 	$(objcopy) $(kernel) --strip-all -O binary $(bin)
 asm:
