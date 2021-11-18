@@ -22,6 +22,9 @@ fn clear_bss() {
 
 #[no_mangle]
 pub fn rust_main() -> ! {
+    //TODO 11.18 晚提交在运行 rust-objdump -all 会有err
+    // error: address range table at offset 0x7380 has a premature terminator entry at offset 0x7390
+
     // println!("work");
     // extern "C" {
     //     fn stext();
