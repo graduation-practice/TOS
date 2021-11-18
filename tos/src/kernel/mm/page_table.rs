@@ -1,5 +1,10 @@
-use super::address::{PPN, VA};
+use super::address::{PPN, VA, VPN};
+use super::frame_allocator::{frame_alloc, frame_dealloc, FrameTracker};
+use alloc::vec;
+use alloc::vec::Vec;
 use bitflags::*;
+use riscv::asm::{sfence_vma, sfence_vma_all};
+use riscv::register::satp;
 bitflags! {
     pub struct PTEFlags: u8 {
         const V = 1 << 0;
@@ -44,6 +49,87 @@ impl PTE {
 }
 
 #[repr(align(4096))]
+// pub struct PageTable {
+//     entries: [PTE; 512],
+// }
 pub struct PageTable {
-    entries: [PTE; 512],
+    root: FrameTracker,
+    frames: Vec<FrameTracker>,
+}
+
+impl PageTable {
+    ///create a new page table
+    pub fn new() -> Self {
+        let frame = frame_alloc().unwrap();
+        PageTable {
+            root: frame,
+            frames: vec![],
+        }
+    }
+    //TODO 暂时copy 后续优化
+    pub fn map(&mut self, vpn: VPN, ppn: PPN, flags: PTEFlags) {
+        let pte = self.find_pte_create(vpn).unwrap();
+        assert!(!pte.is_valid(), "vpn {:?} is mapped before mapping", vpn);
+        *pte = PTE::new(ppn, flags | PTEFlags::V);
+    }
+    pub fn unmap(&mut self, vpn: VPN) {
+        let pte = self.find_pte_create(vpn).unwrap();
+        assert!(pte.is_valid(), "vpn {:?} is invalid before unmapping", vpn);
+        *pte = PTE::empty();
+    }
+
+    fn find_pte_create(&mut self, vpn: VPN) -> Option<&mut PTE> {
+        let idxs = vpn.indexes();
+        let mut ppn = self.root.ppn;
+        let mut result: Option<&mut PTE> = None;
+        for i in 0..3 {
+            let pte = &mut ppn.get_pte_array()[idxs[i]];
+            if i == 2 {
+                result = Some(pte);
+                break;
+            }
+            if !pte.is_valid() {
+                let frame = frame_alloc().unwrap();
+                *pte = PTE::new(frame.ppn, PTEFlags::V);
+
+                self.frames.push(frame);
+            }
+            ppn = pte.ppn();
+        }
+        result
+    }
+
+    /// set satp value 1000 means SV39
+    pub fn token(&self) -> usize {
+        8usize << 60 | self.root.ppn.0
+    }
+
+    unsafe fn set_token(token: usize) {
+        llvm_asm!("csrw satp, $0" :: "r"(token) :: "volatile");
+    }
+
+    fn active_token() -> usize {
+        satp::read().bits()
+    }
+
+    fn flush_tlb() {
+        unsafe {
+            unsafe {
+                unsafe {
+                    sfence_vma_all();
+                }
+            };
+        }
+    }
+
+    pub unsafe fn activate(&self) {
+        let old_token = Self::active_token();
+        let new_token = self.token();
+        println!("switch satp from {:#x} to {:#x}", old_token, new_token);
+        if new_token != old_token {
+            Self::set_token(new_token);
+            // 别忘了刷新 TLB!
+            Self::flush_tlb();
+        }
+    }
 }

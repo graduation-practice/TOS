@@ -22,41 +22,42 @@ fn clear_bss() {
 
 #[no_mangle]
 pub fn rust_main() -> ! {
-    extern "C" {
-        fn stext();
-        fn etext();
-        fn srodata();
-        fn erodata();
-        fn sdata();
-        fn edata();
-        fn sbss();
-        fn ebss();
-        fn bootstack();
-        fn bootstacktop();
-    }
-    clear_bss();
-    println!("Hello, world!");
-    println!(".text [{:#x}, {:#x})", stext as usize, etext as usize);
-    println!(".rodata [{:#x}, {:#x})", srodata as usize, erodata as usize);
-    println!(".data [{:#x}, {:#x})", sdata as usize, edata as usize);
-    println!(
-        "boot_stack [{:#x}, {:#x})",
-        bootstack as usize, bootstacktop as usize
-    );
-    println!(".bss [{:#x}, {:#x})", sbss as usize, ebss as usize);
-    // panic!("Shutdown machine!");
-    tos::arch::trap::init();
-    tos::arch::timer::init();
-    extern "C" {
-        fn ekernel();
-    }
-    println!(
-        "free physical memory paddr = [{:#x}, {:#x})",
-        ekernel as usize - 0x80200000 + 0x80200000,
-        0x88000000 as u32,
-    );
-    tos::kernel::init();
-    tos::kernel::mm::frame_allocator::frame_allocator_test();
+    // println!("work");
+    // extern "C" {
+    //     fn stext();
+    //     fn etext();
+    //     fn srodata();
+    //     fn erodata();
+    //     fn sdata();
+    //     fn edata();
+    //     fn sbss();
+    //     fn ebss();
+    //     fn bootstack();
+    //     fn bootstacktop();
+    // }
+    // clear_bss();
+    // println!("Hello, world!");
+    // println!(".text [{:#x}, {:#x})", stext as usize, etext as usize);
+    // println!(".rodata [{:#x}, {:#x})", srodata as usize, erodata as usize);
+    // println!(".data [{:#x}, {:#x})", sdata as usize, edata as usize);
+    // println!(
+    //     "boot_stack [{:#x}, {:#x})",
+    //     bootstack as usize, bootstacktop as usize
+    // );
+    // println!(".bss [{:#x}, {:#x})", sbss as usize, ebss as usize);
+    // // panic!("Shutdown machine!");
+    // tos::arch::trap::init();
+    // tos::arch::timer::init();
+    // extern "C" {
+    //     fn ekernel();
+    // }
+    // println!(
+    //     "free physical memory paddr = [{:#x}, {:#x})",
+    //     ekernel as usize - 0x80200000 + 0x80200000,
+    //     0x88000000 as u32,
+    // );
+    // tos::kernel::init();
+    // tos::kernel::mm::frame_allocator::frame_allocator_test();
     // panic!("end of rust_main");
 
     // unsafe {

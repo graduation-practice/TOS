@@ -1,6 +1,6 @@
 extern crate alloc;
 use super::address::{PA, PPN};
-use crate::kernel::sync::UPSafeCell;
+
 use crate::{arch::config::MEMORY_END, console::print};
 use alloc::vec::Vec;
 use core::fmt::{self, Debug, Formatter};
@@ -110,7 +110,7 @@ pub fn frame_alloc() -> Option<FrameTracker> {
         .map(|ppn| FrameTracker::new(ppn))
 }
 
-fn frame_dealloc(ppn: PPN) {
+pub fn frame_dealloc(ppn: PPN) {
     FRAME_ALLOCATOR.lock().dealloc(ppn);
 }
 

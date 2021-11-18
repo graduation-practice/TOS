@@ -25,3 +25,5 @@ pub const CLOCK_FREQ: u64 = 10_000_000;
 /// boot cpu id
 pub const BOOT_CPU_ID: usize = 0;
 pub const PAGE_SIZE: usize = 0x1000;
+
+pub const TRAMPOLINE: usize = usize::MAX - PAGE_SIZE + 1;
