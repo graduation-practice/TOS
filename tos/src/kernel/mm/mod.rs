@@ -8,9 +8,11 @@ pub use space::KERNEL_SPACE;
 use space::{MapArea, MapPermission, MemorySet};
 pub fn init() {
     frame_allocator::init();
+    println!("success init frame allocator");
     heap_allocator::init_heap();
+    println!("success init heap allocator");
     KERNEL_SPACE.lock().activate();
-    println!("++++ setup memory!    ++++");
+    // println!("++++ setup memory!    ++++");
 }
 
 // pub fn kernel_remap() {

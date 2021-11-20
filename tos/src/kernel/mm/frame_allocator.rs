@@ -89,19 +89,7 @@ lazy_static! {
         Mutex::new(FrameAllocatorImpl::new());
 }
 
-pub fn init() {
-    extern "C" {
-        fn ekernel();
-    }
 
-    FRAME_ALLOCATOR.lock().init(
-        PA::from(ekernel as usize).ceil(),
-        PA::from(MEMORY_END).floor(),
-    );
-
-    //TODO debug 加了print语句后不触发page fault bug
-    println!("init end!");
-}
 
 pub fn frame_alloc() -> Option<FrameTracker> {
     FRAME_ALLOCATOR
@@ -135,4 +123,18 @@ pub fn frame_allocator_test() {
 
     drop(v);
     println!("frameallocator_test passed!");
+}
+
+pub fn init() {
+    extern "C" {
+        fn ekernel();
+    }
+
+    FRAME_ALLOCATOR.lock().init(
+        PA::from(ekernel as usize).ceil(),
+        PA::from(MEMORY_END).floor(),
+    );
+
+    //TODO debug 加了print语句后不触发page fault bug
+    println!("init end!");
 }

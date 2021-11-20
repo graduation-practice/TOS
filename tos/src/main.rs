@@ -48,6 +48,7 @@ pub fn rust_main() -> ! {
     //     bootstack as usize, bootstacktop as usize
     // );
     // println!(".bss [{:#x}, {:#x})", sbss as usize, ebss as usize);
+
     // // panic!("Shutdown machine!");
     // tos::arch::trap::init();
     // tos::arch::timer::init();

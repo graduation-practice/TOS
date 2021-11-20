@@ -2,6 +2,7 @@ use super::address::{VPNRange, PA, PPN, VA, VPN};
 use super::frame_allocator::{frame_alloc, FrameTracker};
 use super::page_table::{PTEFlags, PageTable};
 use crate::arch::config::{MEMORY_END, TRAMPOLINE};
+use crate::console::print;
 use _core::iter::Map;
 use alloc::collections::BTreeMap;
 use alloc::vec::Vec;
@@ -40,19 +41,7 @@ pub struct MemorySet {
     areas: Vec<MapArea>,
 }
 
-extern "C" {
-    fn stext();
-    fn etext();
-    fn srodata();
-    fn erodata();
-    fn sdata();
-    fn edata();
-    fn sbss_with_stack();
-    fn ebss();
-    fn ekernel();
-    // fn strampoline();
 
-}
 impl MemorySet {
     pub fn new() -> Self {
         Self {
@@ -77,10 +66,25 @@ impl MemorySet {
     // }
 
     fn new_kernel() -> Self {
-        let mut memory_set = Self::new();
+        extern "C" {
+            fn stext();
+            fn etext();
+            fn srodata();
+            fn erodata();
+            fn sdata();
+            fn edata();
+            fn sbss_with_stack();
+            fn ebss();
+            fn ekernel();
+            // fn strampoline();
+        
+        }
+        println!("it work!");
+        
         // memory_set.map_trampoline();
         // map kernel sections
-
+        println!("it work!");
+        
         println!(".text [{:#x}, {:#x})", stext as usize, etext as usize);
 
         println!(".rodata [{:#x}, {:#x})", srodata as usize, erodata as usize);
@@ -93,7 +97,7 @@ impl MemorySet {
         );
 
         println!("mapping .text section");
-
+        let mut memory_set = Self::new();
         memory_set.push(
             MapArea::new(
                 (stext as usize).into(),
@@ -203,5 +207,5 @@ use alloc::sync::Arc;
 use spin::Mutex;
 lazy_static! {
     pub static ref KERNEL_SPACE: Arc<Mutex<MemorySet>> =
-        Arc::new(unsafe { Mutex::new(MemorySet::new_kernel()) });
+        Arc::new(Mutex::new(MemorySet::new_kernel()) );
 }
