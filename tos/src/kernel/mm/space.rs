@@ -5,6 +5,7 @@ use crate::arch::config::{MEMORY_END, TRAMPOLINE};
 use crate::console::print;
 use _core::iter::Map;
 use alloc::collections::BTreeMap;
+use alloc::vec;
 use alloc::vec::Vec;
 use bitflags::*;
 use lazy_static::*;
@@ -41,9 +42,9 @@ pub struct MemorySet {
     areas: Vec<MapArea>,
 }
 
-
 impl MemorySet {
     pub fn new() -> Self {
+        // println!("new!");
         Self {
             page_table: PageTable::new(),
             areas: Vec::new(),
@@ -77,27 +78,22 @@ impl MemorySet {
             fn ebss();
             fn ekernel();
             // fn strampoline();
-        
+
         }
-        println!("it work!");
-        
-        // memory_set.map_trampoline();
-        // map kernel sections
-        println!("it work!");
-        
-        println!(".text [{:#x}, {:#x})", stext as usize, etext as usize);
 
-        println!(".rodata [{:#x}, {:#x})", srodata as usize, erodata as usize);
+        // println!(".text [{:#x}, {:#x})", stext as usize, etext as usize);
 
-        println!(".data [{:#x}, {:#x})", sdata as usize, edata as usize);
+        // println!(".rodata [{:#x}, {:#x})", srodata as usize, erodata as usize);
 
-        println!(
-            ".bss [{:#x}, {:#x})",
-            sbss_with_stack as usize, ebss as usize
-        );
+        // println!(".data [{:#x}, {:#x})", sdata as usize, edata as usize);
 
-        println!("mapping .text section");
+        // println!(
+        //     ".bss [{:#x}, {:#x})",
+        //     sbss_with_stack as usize, ebss as usize
+        // );
+        // println!("m");
         let mut memory_set = Self::new();
+        // println!("m");
         memory_set.push(
             MapArea::new(
                 (stext as usize).into(),
@@ -162,7 +158,7 @@ impl MemorySet {
         let satp = self.page_table.token();
         unsafe {
             satp::write(satp);
-            llvm_asm!("sfence.vma" :::: "volatile");
+            asm!("sfence.vma");
         }
     }
 
@@ -207,5 +203,5 @@ use alloc::sync::Arc;
 use spin::Mutex;
 lazy_static! {
     pub static ref KERNEL_SPACE: Arc<Mutex<MemorySet>> =
-        Arc::new(Mutex::new(MemorySet::new_kernel()) );
+        Arc::new(Mutex::new(MemorySet::new_kernel()));
 }

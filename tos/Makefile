@@ -1,11 +1,12 @@
 MAKEFILE_DIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 target := riscv64imac-unknown-none-elf
-rustsbi := ../bootloader/rustsbi-qemu.bin
+rustsbi := ../bootloader/rustsbi-qemu2.bin
 mode := debug
 kernel := $(MAKEFILE_DIR)target/$(target)/$(mode)/tos
 bin := $(MAKEFILE_DIR)target/$(target)/$(mode)/kernel.bin
 objdump := rust-objdump --arch-name=riscv64
 objcopy := rust-objcopy --binary-architecture=riscv64
+VA := 0xffffffc080200000
 .PHONY: kernel build clean qemu run env
 env:
 	cargo install cargo-binutils
@@ -31,3 +32,6 @@ run: build qemu
 
 read: build
 	rust-objdump -all $(kernel)
+
+show: 
+	riscv64-unknown-elf-addr2line -e  ./target/riscv64imac-unknown-none-elf/debug/tos $(VA)

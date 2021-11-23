@@ -1,3 +1,5 @@
+use crate::console::print;
+
 use super::address::{PPN, VA, VPN};
 use super::frame_allocator::{frame_alloc, frame_dealloc, FrameTracker};
 use alloc::vec;
@@ -53,7 +55,7 @@ impl PTE {
 //     entries: [PTE; 512],
 // }
 pub struct PageTable {
-    root: FrameTracker,
+    pub root: FrameTracker,
     frames: Vec<FrameTracker>,
 }
 
@@ -61,7 +63,8 @@ impl PageTable {
     ///create a new page table
     pub fn new() -> Self {
         let frame = frame_alloc().unwrap();
-        PageTable {
+        // println!("new page table");
+        Self {
             root: frame,
             frames: vec![],
         }

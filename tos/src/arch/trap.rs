@@ -18,7 +18,7 @@ pub fn init() {
         // 将中断处理总入口设置为 __trap
         stvec::write(__trap as usize, stvec::TrapMode::Direct);
         // 设置 sstatus 的 SIE 位
-        sstatus::set_sie();
+        // sstatus::set_sie();
     }
     println!("++++ setup interrupt! ++++");
 }
@@ -42,15 +42,18 @@ pub fn handle_trap(tf: &mut TrapFrame) {
     match scause::read().cause() {
         // exception
         Trap::Exception(Exception::Breakpoint) => breakpoint(&mut tf.sepc),
-        Trap::Exception(Exception::StoreFault) => store_fault(),
+        Trap::Exception(Exception::InstructionPageFault) => page_fault(tf),
+        Trap::Exception(Exception::LoadPageFault) => page_fault(tf),
+        Trap::Exception(Exception::StorePageFault) => page_fault(tf),
+        // Trap::Exception(Exception::StorePageFault) => page_fault(tf),
         _ => {
             println!(
-                "Unsupported trap is excepeion {}, code {}, stval = {}!",
+                "Unsupported trap is excepeion {}, code {}, stval = {:?}!",
                 scause::read().is_exception(),
                 scause::read().code(),
                 stval::read()
             );
-            panic!("");
+            page_fault(tf)
         }
     }
     unsafe {
@@ -61,8 +64,14 @@ pub fn handle_trap(tf: &mut TrapFrame) {
 }
 
 fn breakpoint(sepc: &mut usize) {}
-fn store_fault() {
+fn page_fault(tf: &mut TrapFrame) {
     // println!("store_fault!");
-    // println!("Accessed Address: {:?}", sepc::read());
-    panic!("page fault");
+    // println!("Accessed Address: {:#?}", sepc::read());
+    println!(
+        "{:?} va = {:#x} instruction = {:#x}",
+        scause::read().cause(),
+        stval::read(),
+        tf.sepc
+    );
+    panic!("page fault!");
 }

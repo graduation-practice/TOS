@@ -1,42 +1,45 @@
 extern crate alloc;
-use super::address::{PA, PPN};
-
-use crate::{arch::config::MEMORY_END, console::print};
+use super::address::{PA, PPN, VA};
+use crate::{arch::config::MEMORY_SIZE, arch::config::MEMORY_START, console::print};
+use alloc::sync::Arc;
 use alloc::vec::Vec;
 use core::fmt::{self, Debug, Formatter};
 use lazy_static::*;
 use spin::Mutex;
+
 trait FrameAllocator {
     fn new() -> Self;
-    fn alloc(&mut self) -> Option<PPN>;
-    fn dealloc(&mut self, ppn: PPN);
+    fn alloc(&mut self) -> Option<FrameTracker>;
+    fn dealloc(&mut self, ft: &Frame);
 }
-
-pub struct FrameTracker {
+pub struct Frame {
+    // TODO 去掉 pub
     pub ppn: PPN,
 }
 
-impl FrameTracker {
+impl Frame {
     pub fn new(ppn: PPN) -> Self {
         // page cleaning
-        let bytes_array = ppn.get_bytes_array();
-        for i in bytes_array {
-            *i = 0;
-        }
+        // let bytes_array = ppn.get_bytes_array();
+        // for i in bytes_array {
+        //     *i = 0;
+        // }
         Self { ppn }
     }
 }
 
-impl Debug for FrameTracker {
+impl Debug for Frame {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        f.write_fmt(format_args!("FrameTracker:PPN={:#x}", self.ppn.0))
+        f.write_fmt(format_args!("Frame:PPN={:#x}", self.ppn.0))
     }
 }
-impl Drop for FrameTracker {
+impl Drop for Frame {
     fn drop(&mut self) {
-        frame_dealloc(self.ppn);
+        FRAME_ALLOCATOR.lock().dealloc(self);
     }
 }
+pub type FrameTracker = Arc<Frame>;
+
 pub struct StackFrameAllocator {
     current: usize, //空闲内存的起始物理页号
     end: usize,     //空闲内存的结束物理页号
@@ -52,21 +55,29 @@ impl FrameAllocator for StackFrameAllocator {
         }
     }
 
-    fn alloc(&mut self) -> Option<PPN> {
+    fn alloc(&mut self) -> Option<FrameTracker> {
         if let Some(ppn) = self.recycled.pop() {
-            Some(ppn.into())
+            // println!("a");
+            Some(Arc::new(Frame::new(ppn.into())))
         } else {
             if self.current == self.end {
+                // println!("b");
                 None
             } else {
                 self.current += 1;
-                Some((self.current - 1).into())
+                // println!(
+                //     "frame{:#?}",
+                //     Some(Arc::new(Frame::new((self.current - 1).into())))
+
+                // );
+                // println!("c");
+                Some(Arc::new(Frame::new((self.current - 1).into())))
             }
         }
     }
 
-    fn dealloc(&mut self, ppn: PPN) {
-        let ppn = ppn.0;
+    fn dealloc(&mut self, ft: &Frame) {
+        let ppn = ft.ppn.into();
 
         if ppn >= self.current || self.recycled.iter().find(|&v| *v == ppn).is_some() {
             panic!("Frame ppn={:#x} has not been allocated!", ppn);
@@ -77,9 +88,15 @@ impl FrameAllocator for StackFrameAllocator {
 }
 
 impl StackFrameAllocator {
-    pub fn init(&mut self, p: PPN, r: PPN) {
-        self.current = p.0;
-        self.end = r.0;
+    pub fn init(&mut self, c: PPN, e: PPN) {
+        self.current = c.0;
+        self.end = e.0;
+        println!(
+            "last {} Physical Frames: [{:#x}, {:#x}]",
+            self.end - self.current,
+            self.current,
+            self.end
+        );
     }
 }
 
@@ -89,17 +106,14 @@ lazy_static! {
         Mutex::new(FrameAllocatorImpl::new());
 }
 
-
-
 pub fn frame_alloc() -> Option<FrameTracker> {
-    FRAME_ALLOCATOR
-        .lock()
-        .alloc()
-        .map(|ppn| FrameTracker::new(ppn))
+    println!("enter frame_alloc!");
+    FRAME_ALLOCATOR.lock().alloc()
+    // .map(|ppn| FrameTracker::new(ppn))
 }
 
-pub fn frame_dealloc(ppn: PPN) {
-    FRAME_ALLOCATOR.lock().dealloc(ppn);
+pub fn frame_dealloc(ft: &Frame) {
+    FRAME_ALLOCATOR.lock().dealloc(ft);
 }
 
 #[allow(unused)]
@@ -125,14 +139,15 @@ pub fn frame_allocator_test() {
     println!("frameallocator_test passed!");
 }
 
+/// init frame allocator
 pub fn init() {
     extern "C" {
         fn ekernel();
     }
 
     FRAME_ALLOCATOR.lock().init(
-        PA::from(ekernel as usize).ceil(),
-        PA::from(MEMORY_END).floor(),
+        VA::from(ekernel as usize).ceil().into(),
+        VA::from(ekernel as usize + MEMORY_SIZE).floor().into(),
     );
 
     //TODO debug 加了print语句后不触发page fault bug

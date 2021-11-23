@@ -1,5 +1,5 @@
 use super::page_table::PTE;
-use crate::arch::config::{PAGE_SIZE, PAGE_SIZE_BITS};
+use crate::arch::config::{KERNEL_MAP_OFFSET, PAGE_SIZE, PAGE_SIZE_BITS};
 use core::fmt::{self, Debug, Formatter};
 #[derive(Copy, Clone, Ord, PartialOrd, Eq, PartialEq)]
 pub struct PA(pub usize);
@@ -12,6 +12,19 @@ pub struct PPN(pub usize);
 
 #[derive(Copy, Debug, Clone, Ord, PartialOrd, Eq, PartialEq)]
 pub struct VPN(pub usize);
+/// VPN -> PPN
+impl From<VPN> for PPN {
+    fn from(vpn: VPN) -> Self {
+        Self(vpn.0 - (KERNEL_MAP_OFFSET >> PAGE_SIZE_BITS))
+    }
+}
+
+/// PPN -> VPN
+impl From<PPN> for VPN {
+    fn from(ppn: PPN) -> Self {
+        Self(ppn.0 + (KERNEL_MAP_OFFSET >> PAGE_SIZE_BITS))
+    }
+}
 
 impl From<usize> for PA {
     fn from(v: usize) -> Self {
@@ -42,6 +55,7 @@ impl From<VA> for VPN {
 }
 impl From<usize> for PPN {
     fn from(v: usize) -> Self {
+        // println!("usize -> ppn");
         Self(v)
     }
 }
