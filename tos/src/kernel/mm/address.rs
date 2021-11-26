@@ -1,6 +1,8 @@
 use super::page_table::PTE;
 use crate::arch::config::{KERNEL_MAP_OFFSET, PAGE_SIZE, PAGE_SIZE_BITS};
-use core::fmt::{self, Debug, Formatter};
+
+use core::{fmt::Debug, iter::Step, mem::size_of};
+
 #[derive(Copy, Clone, Ord, PartialOrd, Eq, PartialEq)]
 pub struct PA(pub usize);
 
@@ -83,6 +85,13 @@ impl From<usize> for VA {
     }
 }
 
+///从指针转为虚拟地址
+impl<T> From<*const T> for VA {
+    fn from(pointer: *const T) -> Self {
+        Self(pointer as usize)
+    }
+}
+
 impl PA {
     pub fn floor(&self) -> PPN {
         PPN(self.0 / PAGE_SIZE)
@@ -106,6 +115,9 @@ impl VA {
 
     pub fn ceil(&self) -> VPN {
         VPN((self.0 + PAGE_SIZE - 1) / PAGE_SIZE)
+    }
+    pub fn get_mut<T>(&self) -> &'static mut T {
+        unsafe { &mut *(self.0 as *mut T) }
     }
 }
 
@@ -135,6 +147,16 @@ impl VPN {
             vpn >>= 9;
         }
         idx
+    }
+
+    pub fn get_array<T>(&self) -> &'static mut [T] {
+        assert!(PAGE_SIZE % size_of::<T>() == 0);
+        unsafe {
+            core::slice::from_raw_parts_mut(
+                (self.0 << PAGE_SIZE_BITS) as *mut T,
+                PAGE_SIZE / size_of::<T>(),
+            )
+        }
     }
 }
 
@@ -210,4 +232,159 @@ where
         }
     }
 }
-pub type VPNRange = SimpleRange<VPN>;
+
+/// 为各种仅包含一个 usize 的类型实现运算操作
+/// TODO 把用不到的删掉
+macro_rules! implement_usize_operations {
+    ($type_name: ty) => {
+        /// `+`
+        #[allow(unused_unsafe)]
+        impl core::ops::Add<usize> for $type_name {
+            type Output = Self;
+
+            fn add(self, other: usize) -> Self::Output {
+                Self(self.0 + other)
+            }
+        }
+        /// `+=`
+        #[allow(unused_unsafe)]
+        impl core::ops::AddAssign<usize> for $type_name {
+            fn add_assign(&mut self, rhs: usize) {
+                unsafe {
+                    self.0 += rhs;
+                }
+            }
+        }
+        /// `-`
+        #[allow(unused_unsafe)]
+        impl core::ops::Sub<usize> for $type_name {
+            type Output = Self;
+
+            fn sub(self, other: usize) -> Self::Output {
+                Self(self.0 - other)
+            }
+        }
+        /// `-`
+        impl core::ops::Sub<$type_name> for $type_name {
+            type Output = usize;
+
+            fn sub(self, other: $type_name) -> Self::Output {
+                self.0 - other.0
+            }
+        }
+        /// `-=`
+        #[allow(unused_unsafe)]
+        impl core::ops::SubAssign<usize> for $type_name {
+            fn sub_assign(&mut self, rhs: usize) {
+                self.0 -= rhs;
+            }
+        }
+        /// 和 usize 相互转换
+        // #[allow(unused_unsafe)]
+        // impl From<usize> for $type_name {
+        //     fn from(value: usize) -> Self {
+        //         Self(value)
+        //     }
+        // }
+        // /// 和 usize 相互转换
+        // impl From<$type_name> for usize {
+        //     fn from(value: $type_name) -> Self {
+        //         value.0
+        //     }
+        // }
+        /// 是否有效（0 为无效）
+        impl $type_name {
+            pub fn valid(&self) -> bool {
+                self.0 != 0
+            }
+        }
+        /// {} 输出
+        impl core::fmt::Display for $type_name {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                write!(f, "{}(0x{:x})", stringify!($type_name), self.0)
+            }
+        }
+    };
+}
+implement_usize_operations! {PA}
+implement_usize_operations! {VA}
+implement_usize_operations! {PPN}
+implement_usize_operations! {VPN}
+
+impl Step for VPN {
+    fn steps_between(start: &Self, end: &Self) -> Option<usize> {
+        Step::steps_between(&start.0, &end.0)
+    }
+
+    fn forward_checked(start: Self, count: usize) -> Option<Self> {
+        Some(start + count)
+    }
+
+    fn backward_checked(start: Self, count: usize) -> Option<Self> {
+        Some(start - count)
+    }
+}
+
+impl Step for PPN {
+    fn steps_between(start: &Self, end: &Self) -> Option<usize> {
+        Step::steps_between(&start.0, &end.0)
+    }
+
+    fn forward_checked(start: Self, count: usize) -> Option<Self> {
+        Some(start + count)
+    }
+
+    fn backward_checked(start: Self, count: usize) -> Option<Self> {
+        Some(start - count)
+    }
+}
+pub type VPNRange = core::ops::Range<VPN>;
+pub type VARange = core::ops::Range<VA>;
+
+#[derive(Clone)]
+pub struct VARangeOrd(pub VARange);
+
+impl VARangeOrd {
+    /// 获取 VPNRange
+    pub fn vpn_range(&self) -> VPNRange {
+        self.0.start.floor()..self.0.end.ceil()
+    }
+}
+
+impl Ord for VARangeOrd {
+    fn cmp(&self, other: &Self) -> core::cmp::Ordering {
+        if self.eq(other) {
+            core::cmp::Ordering::Equal
+        } else if self.0.start < other.0.start {
+            core::cmp::Ordering::Less
+        } else {
+            core::cmp::Ordering::Greater
+        }
+    }
+}
+impl PartialOrd for VARangeOrd {
+    fn partial_cmp(&self, other: &Self) -> Option<core::cmp::Ordering> {
+        Some(self.cmp(other))
+    }
+}
+impl Eq for VARangeOrd {}
+impl PartialEq for VARangeOrd {
+    fn eq(&self, other: &Self) -> bool {
+        (self.0.start <= other.0.start && other.0.end <= self.0.end)
+            || (other.0.start <= self.0.start && self.0.end <= other.0.end)
+    }
+}
+
+#[macro_export]
+macro_rules! round_down {
+    ($value: expr, $boundary: expr) => {
+        ($value & !($boundary - 1))
+    };
+}
+
+#[macro_export]
+macro_rules! round_up {
+    ($value: expr, $boundary: expr) => {
+        ($value + $boundary - 1 & !($boundary - 1))
+    };
+}

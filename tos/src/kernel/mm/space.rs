@@ -1,8 +1,9 @@
-use super::address::{VPNRange, PA, PPN, VA, VPN};
+use super::address::{VARange, VPNRange, PA, PPN, VA, VPN};
 use super::frame_allocator::{frame_alloc, FrameTracker};
 use super::page_table::{PTEFlags, PageTable};
 use crate::arch::config::{MEMORY_END, TRAMPOLINE};
 use crate::console::print;
+use crate::kernel::mm::address::VARangeOrd;
 use _core::iter::Map;
 use alloc::collections::BTreeMap;
 use alloc::vec;
@@ -29,17 +30,24 @@ bitflags! {
         const X = 1 << 3;
         const U = 1 << 4;
     }
+
+}
+
+impl MapPermission {
+    pub fn to_pte(&self) -> PTEFlags {
+        PTEFlags::from_bits(self.bits as u8).unwrap()
+    }
 }
 pub struct MapArea {
     vpn_range: VPNRange,
-    data_frames: BTreeMap<VPN, FrameTracker>,
-    map_type: MapType,
-    map_perm: MapPermission,
+    pub data_frames: BTreeMap<VPN, FrameTracker>,
+    pub map_type: MapType,
+    pub map_perm: MapPermission,
 }
 
 pub struct MemorySet {
     page_table: PageTable,
-    areas: Vec<MapArea>,
+    pub areas: BTreeMap<VARangeOrd, MapArea>,
 }
 
 impl MemorySet {
@@ -47,7 +55,7 @@ impl MemorySet {
         // println!("new!");
         Self {
             page_table: PageTable::new(),
-            areas: Vec::new(),
+            areas: BTreeMap::<VARangeOrd, MapArea>::new(),
         }
     }
 
@@ -55,8 +63,23 @@ impl MemorySet {
         map_area.map(&mut self.page_table);
     }
 
-    pub fn insert_framed_area(&mut self, sva: VA, eva: VA, permission: MapPermission) {
-        self.push(MapArea::new(sva, eva, MapType::Framed, permission), None);
+    /// 在地址空间插入一段按帧映射的区域，未检查重叠区域
+    pub fn insert_framed_area(
+        &mut self,
+        va_range: VARange,
+        map_perm: MapPermission,
+        data: Option<&[u8]>,
+    ) {
+        let mut area = MapArea {
+            vpn_range: VARangeOrd(va_range.clone()).vpn_range(),
+            data_frames: BTreeMap::new(),
+            map_type: MapType::Framed,
+            map_perm,
+        };
+        // println!("{:#x?} {:?}", va_range, map_perm);
+        self.page_table
+            .map(VARangeOrd(va_range.clone()), &mut area, data);
+        self.areas.insert(VARangeOrd(va_range), area);
     }
     // fn map_trampoline(&mut self) {
     //     self.page_table.map(
@@ -170,7 +193,7 @@ impl MapArea {
         let svpn: VPN = sva.floor();
         let evpn: VPN = eva.ceil();
         Self {
-            vpn_range: VPNRange::new(svpn, evpn),
+            vpn_range: { svpn..evpn },
             data_frames: BTreeMap::new(),
             map_type,
             map_perm: permission,
@@ -190,7 +213,7 @@ impl MapArea {
             }
         }
         let pte_flags = PTEFlags::from_bits(self.map_perm.bits).unwrap();
-        page_table.map(vpn, ppn, pte_flags);
+        page_table.map_one(vpn, ppn, pte_flags);
     }
 
     pub fn map(&mut self, page_table: &mut PageTable) {

@@ -21,7 +21,7 @@ pub fn init() {
         TICKS = 0;
 
         //允许时钟中断
-        // sie::set_stimer();
+        sie::set_stimer();
     }
     // 设置下一次时钟中断
     set_next_timeout();

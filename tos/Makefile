@@ -1,6 +1,6 @@
 MAKEFILE_DIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 target := riscv64imac-unknown-none-elf
-rustsbi := ../bootloader/rustsbi-qemu2.bin
+rustsbi := ../bootloader/rustsbi-qemuv2.bin
 mode := debug
 kernel := $(MAKEFILE_DIR)target/$(target)/$(mode)/tos
 bin := $(MAKEFILE_DIR)target/$(target)/$(mode)/kernel.bin
@@ -35,3 +35,5 @@ read: build
 
 show: 
 	riscv64-unknown-elf-addr2line -e  ./target/riscv64imac-unknown-none-elf/debug/tos $(VA)
+read: 
+	rust-objdump -all ./target/riscv64imac-unknown-none-elf/debug/tos 

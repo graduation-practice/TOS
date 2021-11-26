@@ -18,7 +18,7 @@ pub fn init() {
         // 将中断处理总入口设置为 __trap
         stvec::write(__trap as usize, stvec::TrapMode::Direct);
         // 设置 sstatus 的 SIE 位
-        // sstatus::set_sie();
+        sstatus::set_sie();
     }
     println!("++++ setup interrupt! ++++");
 }
@@ -60,7 +60,7 @@ pub fn handle_trap(tf: &mut TrapFrame) {
         // 返回时关闭全局中断
         riscv::register::sstatus::clear_sie();
     }
-    tf.sepc += 2;
+    // tf.sepc += 2;
 }
 
 fn breakpoint(sepc: &mut usize) {}

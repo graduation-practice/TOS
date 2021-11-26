@@ -37,21 +37,21 @@ pub fn rust_main() -> ! {
         fn boot_stack_top();
     }
     clear_bss();
-    // println!("Hello, world!");
-    // println!(".text [{:#x}, {:#x})", stext as usize, etext as usize);
-    // println!(".rodata [{:#x}, {:#x})", srodata as usize, erodata as usize);
-    // println!(".data [{:#x}, {:#x})", sdata as usize, edata as usize);
-    // println!(
-    //     "boot_stack [{:#x}, {:#x})",
-    //     boot_stack as usize, boot_stack_top as usize
-    // );
-    // println!(".bss [{:#x}, {:#x})", sbss as usize, ebss as usize);
+    println!("Hello, world!");
+    println!(".text [{:#x}, {:#x})", stext as usize, etext as usize);
+    println!(".rodata [{:#x}, {:#x})", srodata as usize, erodata as usize);
+    println!(".data [{:#x}, {:#x})", sdata as usize, edata as usize);
+    println!(
+        "boot_stack [{:#x}, {:#x})",
+        boot_stack as usize, boot_stack_top as usize
+    );
+    println!(".bss [{:#x}, {:#x})", sbss as usize, ebss as usize);
 
     tos::arch::trap::init();
     tos::arch::timer::init();
 
     // extern "C" {
-    //     fn ekernel();
+    //     fn ekernel();make show
     // }
     // println!(
     //     "free physical memory paddr = [{:#x}, {:#x})",

@@ -27,3 +27,8 @@ pub const BOOT_CPU_ID: usize = 0;
 pub const PAGE_SIZE: usize = 0x1000;
 
 pub const TRAMPOLINE: usize = usize::MAX - PAGE_SIZE + 1;
+
+pub const KERNEL_STACK_TOP: usize = usize::MAX - KERNEL_STACK_ALIGN_SIZE + 1;
+
+/// 内核栈对齐大小
+pub const KERNEL_STACK_ALIGN_SIZE: usize = 1 << KERNEL_STACK_ALIGN_BITS;
