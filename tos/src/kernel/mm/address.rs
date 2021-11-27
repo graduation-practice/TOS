@@ -349,6 +349,8 @@ impl VARangeOrd {
     pub fn vpn_range(&self) -> VPNRange {
         self.0.start.floor()..self.0.end.ceil()
     }
+
+
 }
 
 impl Ord for VARangeOrd {

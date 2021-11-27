@@ -15,9 +15,10 @@ pub fn init() {
     //TODO 下面两句会触发code = 5 的exception
     // println!("create pt!");
     //let pt = page_table::PageTable::new();
-    let frame = frame_allocator::frame_alloc().unwrap();
+    // let frame = frame_allocator::frame_alloc().unwrap();
 
     // println!("{} ", pt.root.ppn.0);
+
     // frame_allocator::frame_allocator_test();
     // KERNEL_SPACE.lock().activate();
     // println!("++++ setup memory!    ++++");

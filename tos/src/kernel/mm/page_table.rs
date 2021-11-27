@@ -251,10 +251,10 @@ pub fn kernel_page_table() -> PageTable {
 
     for area in areas {
         page_table.map(
-            VARangeOrd(area.0),
+            VARangeOrd((area.0).clone()),
             &mut MapArea {
                 //TODO 精简MapArea
-                vpn_range: VARangeOrd(area.0).vpn_range(),
+                vpn_range: VARangeOrd((area.0).clone()).vpn_range(),
                 data_frames: BTreeMap::new(),
                 map_type: MapType::Linear,
                 map_perm: area.1.to_perm(),

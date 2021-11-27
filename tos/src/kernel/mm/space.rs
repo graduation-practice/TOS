@@ -39,14 +39,14 @@ impl MapPermission {
     }
 }
 pub struct MapArea {
-    vpn_range: VPNRange,
+    pub vpn_range: VPNRange,
     pub data_frames: BTreeMap<VPN, FrameTracker>,
     pub map_type: MapType,
     pub map_perm: MapPermission,
 }
 
 pub struct MemorySet {
-    page_table: PageTable,
+    pub page_table: PageTable,
     pub areas: BTreeMap<VARangeOrd, MapArea>,
 }
 
@@ -217,7 +217,7 @@ impl MapArea {
     }
 
     pub fn map(&mut self, page_table: &mut PageTable) {
-        for vpn in self.vpn_range {
+        for vpn in self.vpn_range.clone() {
             self.map_one(page_table, vpn);
         }
     }

@@ -1,0 +1,180 @@
+**** ERROR ****
+**** Unable to init WebUI. Exiting...
+12 Nov 2021 19:22:10 +0000 x86_64
+version: 2.7.2.1375
+[20211119 10:30:02.982] ZIP: Can't locate [version] in zip, error -100.
+[20211119 10:30:02.982] Configuration from file "/home/swh/.config/rslsync/rslsync.conf" has been applied
+[20211119 10:30:02.998] test sha1: AE5BD8EFEA5322C4D9986D06680A781392F9A642
+[20211119 10:30:02.998] test sha2: 630DCD2966C4336691125448BBB25B4FF412A49C732DB2C8ABC1B8581BD710DD
+[20211119 10:30:02.999] test aes: 0A940BB5416EF045F1C39458C653EA5A07FEEF74E1D5036E900EEE118E949293
+[20211119 10:30:02.999] DISKIO[0x000055bd85dc8f00]: Create diskio pool for drive with id 18446744073709551614, path: , type: 0, size: 1
+[20211119 10:30:02.999] WORKER[0x000055bd85db9690]: created
+[20211119 10:30:02.999] DISKIO[0x000055bd85dc8f00]: created
+[20211119 10:30:02.999] DISK_WORKER[0x000055bd85db9690]: diskio thread start, drive_id = 18446744073709551614, priority = normal
+[20211119 10:30:02.999] WORKER[0x000055bd85dbb370]: created
+[20211119 10:30:02.999] WORKER[0x000055bd85dc98d0]: created
+[20211119 10:30:02.999] WORKER[0x000055bd85dbb370]: thread start
+[20211119 10:30:03.000] WORKER[0x000055bd85dc9b90]: created
+[20211119 10:30:03.000] WORKER[0x000055bd85dc98d0]: thread start
+[20211119 10:30:03.000] WORKER[0x000055bd85dc9e50]: created
+[20211119 10:30:03.000] WORKER[0x000055bd85dca110]: created
+[20211119 10:30:03.000] WORKER[0x000055bd85dc9e50]: thread start
+[20211119 10:30:03.000] WORKER[0x000055bd85dca3d0]: created
+[20211119 10:30:03.000] WORKER[0x000055bd85dca690]: created
+[20211119 10:30:03.000] WORKER[0x000055bd85dca3d0]: thread start
+[20211119 10:30:03.000] WORKER[0x000055bd85dca950]: created
+[20211119 10:30:03.000] WORKER[0x000055bd85dcac10]: created
+[20211119 10:30:03.000] WORKER[0x000055bd85dca950]: thread start
+[20211119 10:30:03.001] WORKER[0x000055bd85dcafe0]: created
+[20211119 10:30:03.001] WORKER[0x000055bd85dcb2a0]: created
+[20211119 10:30:03.001] WORKER[0x000055bd85dcafe0]: thread start
+[20211119 10:30:03.001] WORKER[0x000055bd85dcb560]: created
+[20211119 10:30:03.001] WORKER[0x000055bd85dcac10]: thread start
+[20211119 10:30:03.004] WORKER[0x000055bd85dcb2a0]: thread start
+[20211119 10:30:03.004] WORKER[0x000055bd85dca110]: thread start
+[20211119 10:30:03.004] WORKER[0x000055bd85dc9b90]: thread start
+[20211119 10:30:03.004] WORKER[0x000055bd85dcb8c0]: created
+[20211119 10:30:03.005] WORKER[0x000055bd85dca690]: thread start
+[20211119 10:30:03.005] WORKER[0x000055bd85dcb560]: thread start
+[20211119 10:30:03.006] WORKER[0x000055bd85dcb8c0]: thread start
+[20211119 10:30:03.007] register completion queue with id 0
+[20211119 10:30:03.011] UDP: UDPSocketManager::QuotaData::SetLimit KBps=10485760 pps=6990506
+[20211119 10:30:03.011] UDP: UDPSocketManager::QuotaData::SetLimit KBps=10485760 pps=6990506
+[20211119 10:30:03.011] UDP: UDPSocketManager::QuotaData::SetLimit KBps=10485760 pps=6990506
+[20211119 10:30:03.011] UDP: UDPSocketManager::QuotaData::SetLimit KBps=10485760 pps=6990506
+[20211119 10:30:03.011] register completion queue with id 0
+[20211119 10:30:03.012] 20PeerListenConnection::listen[0x000055bd85dce520][8] bound listening socket 8 to IP 0.0.0.0:64110
+[20211119 10:30:03.013] 20PeerListenConnection::listen[0x000055bd85dcd4e0][9] bound listening socket 9 to IP [::]:64110
+[20211119 10:30:03.013] UDP: UDPSocketManager::QuotaData::SetLimit KBps=10485760 pps=6990506
+[20211119 10:30:03.013] UDP: UDPSocketManager::QuotaData::SetLimit KBps=10485760 pps=6990506
+[20211119 10:30:03.013] UDP: UDP: bound listening socket 10 to IP 0.0.0.0:64110
+[20211119 10:30:03.013] UDP: UDP: bound listening socket 10 to IP 0.0.0.0:64110
+[20211119 10:30:03.013] UDP: UDP getsockopt(SO_SNDBUF) default=212992
+[20211119 10:30:03.013] UDP: UDP failed increasing SO_SNDBUF, requested=2097152 actual=425984
+[20211119 10:30:03.013] UDP: UDP failed increasing SO_SNDBUF, requested=1887437 actual=425984
+[20211119 10:30:03.013] UDP: UDP failed increasing SO_SNDBUF, requested=1677722 actual=425984
+[20211119 10:30:03.013] UDP: UDP failed increasing SO_SNDBUF, requested=1468007 actual=425984
+[20211119 10:30:03.013] UDP: UDP failed increasing SO_SNDBUF, requested=1258292 actual=425984
+[20211119 10:30:03.013] UDP: UDP failed increasing SO_SNDBUF, requested=1048577 actual=425984
+[20211119 10:30:03.013] UDP: UDP failed increasing SO_SNDBUF, requested=838862 actual=425984
+[20211119 10:30:03.013] UDP: UDP failed increasing SO_SNDBUF, requested=629147 actual=425984
+[20211119 10:30:03.013] UDP: UDP increased SO_SNDBUF to 425984
+[20211119 10:30:03.013] UDP: UDP getsockopt(SO_RCVBUF) default=212992
+[20211119 10:30:03.013] UDP: UDP failed increasing SO_RCVBUF, requested=20971520 actual=425984
+[20211119 10:30:03.013] UDP: UDP failed increasing SO_RCVBUF, requested=18874368 actual=425984
+[20211119 10:30:03.013] UDP: UDP failed increasing SO_RCVBUF, requested=16777216 actual=425984
+[20211119 10:30:03.013] UDP: UDP failed increasing SO_RCVBUF, requested=14680064 actual=425984
+[20211119 10:30:03.013] UDP: UDP failed increasing SO_RCVBUF, requested=12582912 actual=425984
+[20211119 10:30:03.013] UDP: UDP failed increasing SO_RCVBUF, requested=10485760 actual=425984
+[20211119 10:30:03.013] UDP: UDP failed increasing SO_RCVBUF, requested=8388608 actual=425984
+[20211119 10:30:03.013] UDP: UDP failed increasing SO_RCVBUF, requested=6291456 actual=425984
+[20211119 10:30:03.013] UDP: UDP failed increasing SO_RCVBUF, requested=4194304 actual=425984
+[20211119 10:30:03.013] UDP: UDP failed increasing SO_RCVBUF, requested=2097152 actual=425984
+[20211119 10:30:03.014] UDP: UDPSocketManager::QuotaData::SetLimit KBps=10485760 pps=6990506
+[20211119 10:30:03.014] UDP: UDPSocketManager::QuotaData::SetLimit KBps=10485760 pps=6990506
+[20211119 10:30:03.014] UDP: UDP: bound listening socket 14 to IP [::]:64110
+[20211119 10:30:03.014] UDP: UDP: bound listening socket 14 to IP [::]:64110
+[20211119 10:30:03.014] UDP: UDP getsockopt(SO_SNDBUF) default=212992
+[20211119 10:30:03.014] UDP: UDP failed increasing SO_SNDBUF, requested=2097152 actual=425984
+[20211119 10:30:03.014] UDP: UDP failed increasing SO_SNDBUF, requested=1887437 actual=425984
+[20211119 10:30:03.014] UDP: UDP failed increasing SO_SNDBUF, requested=1677722 actual=425984
+[20211119 10:30:03.014] UDP: UDP failed increasing SO_SNDBUF, requested=1468007 actual=425984
+[20211119 10:30:03.014] UDP: UDP failed increasing SO_SNDBUF, requested=1258292 actual=425984
+[20211119 10:30:03.014] UDP: UDP failed increasing SO_SNDBUF, requested=1048577 actual=425984
+[20211119 10:30:03.014] UDP: UDP failed increasing SO_SNDBUF, requested=838862 actual=425984
+[20211119 10:30:03.014] UDP: UDP failed increasing SO_SNDBUF, requested=629147 actual=425984
+[20211119 10:30:03.014] UDP: UDP increased SO_SNDBUF to 425984
+[20211119 10:30:03.014] UDP: UDP getsockopt(SO_RCVBUF) default=212992
+[20211119 10:30:03.014] UDP: UDP failed increasing SO_RCVBUF, requested=20971520 actual=425984
+[20211119 10:30:03.015] UDP: UDP failed increasing SO_RCVBUF, requested=18874368 actual=425984
+[20211119 10:30:03.015] UDP: UDP failed increasing SO_RCVBUF, requested=16777216 actual=425984
+[20211119 10:30:03.015] UDP: UDP failed increasing SO_RCVBUF, requested=14680064 actual=425984
+[20211119 10:30:03.015] UDP: UDP failed increasing SO_RCVBUF, requested=12582912 actual=425984
+[20211119 10:30:03.015] UDP: UDP failed increasing SO_RCVBUF, requested=10485760 actual=425984
+[20211119 10:30:03.015] UDP: UDP failed increasing SO_RCVBUF, requested=8388608 actual=425984
+[20211119 10:30:03.015] UDP: UDP failed increasing SO_RCVBUF, requested=6291456 actual=425984
+[20211119 10:30:03.015] UDP: UDP failed increasing SO_RCVBUF, requested=4194304 actual=425984
+[20211119 10:30:03.015] UDP: UDP failed increasing SO_RCVBUF, requested=2097152 actual=425984
+[20211119 10:30:03.016] SE_HTTP_UI_INIT_ERROR - Failed to bind to 0.0.0.0:8888
+[20211119 10:30:03.016] Unable to init WebUI. Exiting...
+[20211119 10:30:03.016] Quit reason: Unable to init WebUI. Exiting...
+[20211119 10:30:03.037] register completion queue with id 0
+[20211119 10:30:03.037] register completion queue with id 1
+[20211119 10:30:03.037] register completion queue with id 1
+[20211119 10:30:03.069] IPv6 is installed
+[20211119 10:30:03.070] Unsupported or empty sync.dat file
+[20211119 10:30:03.070] My new PeerID: 20BA0A44B86013F42E239659A24B85F2EF449EF0
+[20211119 10:30:03.070] LC: LoadLicenses: there is no pro license
+[20211119 10:30:03.072] HTTP[0x00007fd2d0006440][/e?i=2000&e=eyJhY3Rpb24iOiJpbnN0YWxsIiwiYiI6InN5bmMiLCJjYyI6MCwiY2lkIjoiOHJXTFNtdVFCRTlXeU90eSIsImN2IjoiMi43LjIiLCJldmVudE5hbWUiOiJzeW5jQmFzaWMiLCJwbCI6ImxpbnV4Iiwic3NiIjotMSwic3lzdmVyIjoibGludXgiLCJ0cyI6MTYzNzI4OTAwMiwidHlwZSI6InJlZ3VsYXIifQ==]: sending GET http://i-2000.b-2-7-2.sync.bench.resilio.com/e?i=2000&e=eyJhY3Rpb24iOiJpbnN0YWxsIiwiYiI6InN5bmMiLCJjYyI6MCwiY2lkIjoiOHJXTFNtdVFCRTlXeU90eSIsImN2IjoiMi43LjIiLCJldmVudE5hbWUiOiJzeW5jQmFzaWMiLCJwbCI6ImxpbnV4Iiwic3NiIjotMSwic3lzdmVyIjoibGludXgiLCJ0cyI6MTYzNzI4OTAwMiwidHlwZSI6InJlZ3VsYXIifQ==
+[20211119 10:30:03.072] HTTP[0x00007fd2d0008840][/e?i=2000&e=eyJhY3Rpb24iOiJ1cGdyYWRlIiwiYiI6InN5bmMiLCJjYyI6MCwiY2lkIjoiOHJXTFNtdVFCRTlXeU90eSIsImN2IjoiMi43LjIiLCJldmVudE5hbWUiOiJzeW5jQmFzaWMiLCJwbCI6ImxpbnV4IiwicHYiOiIiLCJzc2IiOjAsInN5c3ZlciI6ImxpbnV4IiwidHMiOjE2MzcyODkwMDN9]: sending GET http://i-2000.b-2-7-2.sync.bench.resilio.com/e?i=2000&e=eyJhY3Rpb24iOiJ1cGdyYWRlIiwiYiI6InN5bmMiLCJjYyI6MCwiY2lkIjoiOHJXTFNtdVFCRTlXeU90eSIsImN2IjoiMi43LjIiLCJldmVudE5hbWUiOiJzeW5jQmFzaWMiLCJwbCI6ImxpbnV4IiwicHYiOiIiLCJzc2IiOjAsInN5c3ZlciI6ImxpbnV4IiwidHMiOjE2MzcyODkwMDN9
+[20211119 10:30:03.073] HTTP[0x00007fd2d000c900][/e?i=2000&e=eyJhY3Rpb24iOiJzdGFydHVwIiwiYiI6InN5bmMiLCJjYyI6MCwiY2lkIjoiOHJXTFNtdVFCRTlXeU90eSIsImN2IjoiMi43LjIiLCJkYXRhIjowLCJkZXUiOmZhbHNlLCJldmVudE5hbWUiOiJzeW5jQmFzaWMiLCJmaWwiOjAsImZvbCI6MCwiZm9saSI6eyJhIjp7fSwicyI6e319LCJmb2xzIjowLCJrZCI6IiIsImwiOjAsImxhIjowLCJsYW5nIjoiZW4iLCJsdCI6ImZyZWUiLCJvZGV1IjpmYWxzZSwicGVlcnMiOjAsInBsIjoibGludXgiLCJzZmYiOjAsInNzYiI6MCwic3NmYyI6MCwic3NmZCI6MCwic3NmcyI6MCwic3lzdmVyIjoibGludXgiLCJ0cmYiOnsiciI6e30sInMiOnt9fSwidHJmYyI6MCwidHMiOjE2MzcyODkwMDMsInVzZXJzIjowfQ==]: sending GET http://i-2000.b-2-7-2.sync.bench.resilio.com/e?i=2000&e=eyJhY3Rpb24iOiJzdGFydHVwIiwiYiI6InN5bmMiLCJjYyI6MCwiY2lkIjoiOHJXTFNtdVFCRTlXeU90eSIsImN2IjoiMi43LjIiLCJkYXRhIjowLCJkZXUiOmZhbHNlLCJldmVudE5hbWUiOiJzeW5jQmFzaWMiLCJmaWwiOjAsImZvbCI6MCwiZm9saSI6eyJhIjp7fSwicyI6e319LCJmb2xzIjowLCJrZCI6IiIsImwiOjAsImxhIjowLCJsYW5nIjoiZW4iLCJsdCI6ImZyZWUiLCJvZGV1IjpmYWxzZSwicGVlcnMiOjAsInBsIjoibGludXgiLCJzZmYiOjAsInNzYiI6MCwic3NmYyI6MCwic3NmZCI6MCwic3NmcyI6MCwic3lzdmVyIjoibGludXgiLCJ0cmYiOnsiciI6e30sInMiOnt9fSwidHJmYyI6MCwidHMiOjE2MzcyODkwMDMsInVzZXJzIjowfQ==
+[20211119 10:30:03.073] Scheduler: Apply global rule, download limit: -1, upload limit: -1
+[20211119 10:30:03.073] CoreState: Total memory: 16598392832, used by Sync: 21831680, percentage used: 0.13
+[20211119 10:30:03.073] CoreState: Cpu load: 0
+[20211119 10:30:03.073] CoreState: Process cpu load: 0
+[20211119 10:30:03.073] message thread start
+[20211119 10:30:03.074] HTTP[0x000055bd85dfd140][/e?i=2000&e=eyJhY3Rpb24iOiJzaHV0ZG93biIsImIiOiJzeW5jIiwiY2MiOjAsImNpZCI6IjhyV0xTbXVRQkU5V3lPdHkiLCJjdiI6IjIuNy4yIiwiZGF0YSI6MCwiZGV1IjpmYWxzZSwiZXZlbnROYW1lIjoic3luY0Jhc2ljIiwiZmlsIjowLCJmb2wiOjAsImZvbGkiOnsiYSI6e30sInMiOnt9fSwiZm9scyI6MCwia2QiOiIiLCJsIjowLCJsYSI6MCwibGFuZyI6ImVuIiwibHQiOiJmcmVlIiwib2RldSI6ZmFsc2UsInBlZXJzIjowLCJwbCI6ImxpbnV4Iiwic2ZmIjowLCJzc2IiOjAsInNzZmMiOjAsInNzZmQiOjAsInNzZnMiOjAsInN5c3ZlciI6ImxpbnV4IiwidHJmIjp7InIiOnt9LCJzIjp7fX0sInRyZmMiOjAsInRzIjoxNjM3Mjg5MDAzLCJ1c2VycyI6MH0=]: sending GET http://i-2000.b-2-7-2.sync.bench.resilio.com/e?i=2000&e=eyJhY3Rpb24iOiJzaHV0ZG93biIsImIiOiJzeW5jIiwiY2MiOjAsImNpZCI6IjhyV0xTbXVRQkU5V3lPdHkiLCJjdiI6IjIuNy4yIiwiZGF0YSI6MCwiZGV1IjpmYWxzZSwiZXZlbnROYW1lIjoic3luY0Jhc2ljIiwiZmlsIjowLCJmb2wiOjAsImZvbGkiOnsiYSI6e30sInMiOnt9fSwiZm9scyI6MCwia2QiOiIiLCJsIjowLCJsYSI6MCwibGFuZyI6ImVuIiwibHQiOiJmcmVlIiwib2RldSI6ZmFsc2UsInBlZXJzIjowLCJwbCI6ImxpbnV4Iiwic2ZmIjowLCJzc2IiOjAsInNzZmMiOjAsInNzZmQiOjAsInNzZnMiOjAsInN5c3ZlciI6ImxpbnV4IiwidHJmIjp7InIiOnt9LCJzIjp7fX0sInRyZmMiOjAsInRzIjoxNjM3Mjg5MDAzLCJ1c2VycyI6MH0=
+[20211119 10:30:03.075] SYS_RES: drive "/", id: 27, capacity: 196828905472, free_space: 96658829312
+[20211119 10:30:03.075] SYS_RES: drive "/home", id: 39, capacity: 196828905472, free_space: 96658829312
+[20211119 10:30:03.075] SYS_RES: drive "/boot", id: 66309, capacity: 523247616, free_space: 450707456
+[20211119 10:30:03.085] saved history: 0 events
+[20211119 10:30:04.007] SyncFolderScanner: shut down
+[20211119 10:30:04.008] HTTP[0x00007fd2d0006440][/e?i=2000&e=eyJhY3Rpb24iOiJpbnN0YWxsIiwiYiI6InN5bmMiLCJjYyI6MCwiY2lkIjoiOHJXTFNtdVFCRTlXeU90eSIsImN2IjoiMi43LjIiLCJldmVudE5hbWUiOiJzeW5jQmFzaWMiLCJwbCI6ImxpbnV4Iiwic3NiIjotMSwic3lzdmVyIjoibGludXgiLCJ0cyI6MTYzNzI4OTAwMiwidHlwZSI6InJlZ3VsYXIifQ==]: closing
+[20211119 10:30:04.008] HTTP[0x00007fd2d0008840][/e?i=2000&e=eyJhY3Rpb24iOiJ1cGdyYWRlIiwiYiI6InN5bmMiLCJjYyI6MCwiY2lkIjoiOHJXTFNtdVFCRTlXeU90eSIsImN2IjoiMi43LjIiLCJldmVudE5hbWUiOiJzeW5jQmFzaWMiLCJwbCI6ImxpbnV4IiwicHYiOiIiLCJzc2IiOjAsInN5c3ZlciI6ImxpbnV4IiwidHMiOjE2MzcyODkwMDN9]: closing
+[20211119 10:30:04.008] HTTP[0x00007fd2d000c900][/e?i=2000&e=eyJhY3Rpb24iOiJzdGFydHVwIiwiYiI6InN5bmMiLCJjYyI6MCwiY2lkIjoiOHJXTFNtdVFCRTlXeU90eSIsImN2IjoiMi43LjIiLCJkYXRhIjowLCJkZXUiOmZhbHNlLCJldmVudE5hbWUiOiJzeW5jQmFzaWMiLCJmaWwiOjAsImZvbCI6MCwiZm9saSI6eyJhIjp7fSwicyI6e319LCJmb2xzIjowLCJrZCI6IiIsImwiOjAsImxhIjowLCJsYW5nIjoiZW4iLCJsdCI6ImZyZWUiLCJvZGV1IjpmYWxzZSwicGVlcnMiOjAsInBsIjoibGludXgiLCJzZmYiOjAsInNzYiI6MCwic3NmYyI6MCwic3NmZCI6MCwic3NmcyI6MCwic3lzdmVyIjoibGludXgiLCJ0cmYiOnsiciI6e30sInMiOnt9fSwidHJmYyI6MCwidHMiOjE2MzcyODkwMDMsInVzZXJzIjowfQ==]: closing
+[20211119 10:30:04.008] HTTP[0x000055bd85dfd140][/e?i=2000&e=eyJhY3Rpb24iOiJzaHV0ZG93biIsImIiOiJzeW5jIiwiY2MiOjAsImNpZCI6IjhyV0xTbXVRQkU5V3lPdHkiLCJjdiI6IjIuNy4yIiwiZGF0YSI6MCwiZGV1IjpmYWxzZSwiZXZlbnROYW1lIjoic3luY0Jhc2ljIiwiZmlsIjowLCJmb2wiOjAsImZvbGkiOnsiYSI6e30sInMiOnt9fSwiZm9scyI6MCwia2QiOiIiLCJsIjowLCJsYSI6MCwibGFuZyI6ImVuIiwibHQiOiJmcmVlIiwib2RldSI6ZmFsc2UsInBlZXJzIjowLCJwbCI6ImxpbnV4Iiwic2ZmIjowLCJzc2IiOjAsInNzZmMiOjAsInNzZmQiOjAsInNzZnMiOjAsInN5c3ZlciI6ImxpbnV4IiwidHJmIjp7InIiOnt9LCJzIjp7fX0sInRyZmMiOjAsInRzIjoxNjM3Mjg5MDAzLCJ1c2VycyI6MH0=]: closing
+[20211119 10:30:04.008] shutdown: waiting for connection pool
+[20211119 10:30:04.042] HTTP[0x00007fd2d0006440][/e?i=2000&e=eyJhY3Rpb24iOiJpbnN0YWxsIiwiYiI6InN5bmMiLCJjYyI6MCwiY2lkIjoiOHJXTFNtdVFCRTlXeU90eSIsImN2IjoiMi43LjIiLCJldmVudE5hbWUiOiJzeW5jQmFzaWMiLCJwbCI6ImxpbnV4Iiwic3NiIjotMSwic3lzdmVyIjoibGludXgiLCJ0cyI6MTYzNzI4OTAwMiwidHlwZSI6InJlZ3VsYXIifQ==]: destroying
+[20211119 10:30:04.042] HTTP[0x00007fd2d0008840][/e?i=2000&e=eyJhY3Rpb24iOiJ1cGdyYWRlIiwiYiI6InN5bmMiLCJjYyI6MCwiY2lkIjoiOHJXTFNtdVFCRTlXeU90eSIsImN2IjoiMi43LjIiLCJldmVudE5hbWUiOiJzeW5jQmFzaWMiLCJwbCI6ImxpbnV4IiwicHYiOiIiLCJzc2IiOjAsInN5c3ZlciI6ImxpbnV4IiwidHMiOjE2MzcyODkwMDN9]: destroying
+[20211119 10:30:04.042] HTTP[0x00007fd2d000c900][/e?i=2000&e=eyJhY3Rpb24iOiJzdGFydHVwIiwiYiI6InN5bmMiLCJjYyI6MCwiY2lkIjoiOHJXTFNtdVFCRTlXeU90eSIsImN2IjoiMi43LjIiLCJkYXRhIjowLCJkZXUiOmZhbHNlLCJldmVudE5hbWUiOiJzeW5jQmFzaWMiLCJmaWwiOjAsImZvbCI6MCwiZm9saSI6eyJhIjp7fSwicyI6e319LCJmb2xzIjowLCJrZCI6IiIsImwiOjAsImxhIjowLCJsYW5nIjoiZW4iLCJsdCI6ImZyZWUiLCJvZGV1IjpmYWxzZSwicGVlcnMiOjAsInBsIjoibGludXgiLCJzZmYiOjAsInNzYiI6MCwic3NmYyI6MCwic3NmZCI6MCwic3NmcyI6MCwic3lzdmVyIjoibGludXgiLCJ0cmYiOnsiciI6e30sInMiOnt9fSwidHJmYyI6MCwidHMiOjE2MzcyODkwMDMsInVzZXJzIjowfQ==]: destroying
+[20211119 10:30:04.042] HTTP[0x000055bd85dfd140][/e?i=2000&e=eyJhY3Rpb24iOiJzaHV0ZG93biIsImIiOiJzeW5jIiwiY2MiOjAsImNpZCI6IjhyV0xTbXVRQkU5V3lPdHkiLCJjdiI6IjIuNy4yIiwiZGF0YSI6MCwiZGV1IjpmYWxzZSwiZXZlbnROYW1lIjoic3luY0Jhc2ljIiwiZmlsIjowLCJmb2wiOjAsImZvbGkiOnsiYSI6e30sInMiOnt9fSwiZm9scyI6MCwia2QiOiIiLCJsIjowLCJsYSI6MCwibGFuZyI6ImVuIiwibHQiOiJmcmVlIiwib2RldSI6ZmFsc2UsInBlZXJzIjowLCJwbCI6ImxpbnV4Iiwic2ZmIjowLCJzc2IiOjAsInNzZmMiOjAsInNzZmQiOjAsInNzZnMiOjAsInN5c3ZlciI6ImxpbnV4IiwidHJmIjp7InIiOnt9LCJzIjp7fX0sInRyZmMiOjAsInRzIjoxNjM3Mjg5MDAzLCJ1c2VycyI6MH0=]: destroying
+[20211119 10:30:04.050] shutdown: connection pool empty
+[20211119 10:30:04.050] WORKER[0x000055bd85dbb370]: thread stop
+[20211119 10:30:04.050] WORKER[0x000055bd85dc98d0]: thread stop
+[20211119 10:30:04.050] WORKER[0x000055bd85dc9b90]: thread stop
+[20211119 10:30:04.051] WORKER[0x000055bd85dc9e50]: thread stop
+[20211119 10:30:04.051] WORKER[0x000055bd85dca110]: thread stop
+[20211119 10:30:04.051] WORKER[0x000055bd85dca3d0]: thread stop
+[20211119 10:30:04.051] WORKER[0x000055bd85dca690]: thread stop
+[20211119 10:30:04.052] WORKER[0x000055bd85dca950]: thread stop
+[20211119 10:30:04.052] WORKER[0x000055bd85dcac10]: thread stop
+[20211119 10:30:04.052] WORKER[0x000055bd85dcafe0]: thread stop
+[20211119 10:30:04.052] WORKER[0x000055bd85dcb2a0]: thread stop
+[20211119 10:30:04.052] WORKER[0x000055bd85dcb560]: thread stop
+[20211119 10:30:04.052] unregister completion queue with id 0
+[20211119 10:30:04.052] unregister completion queue with id 1
+[20211119 10:30:04.052] message thread stop
+[20211119 10:30:04.052] GS: shutdown
+[20211119 10:30:04.064] DISKIO[0x000055bd85dc8f00]: stopping service threads
+[20211119 10:30:04.064] DISK_WORKER[0x000055bd85db9690]: diskio thread stop, drive_id = 18446744073709551614
+[20211119 10:30:04.064] DISKIO[0x000055bd85dc8f00]: service threads stopped
+[20211119 10:30:04.064] WORKER[0x000055bd85db9690]: deleted
+[20211119 10:30:04.064] DISKIO[0x000055bd85dc8f00]: deleted
+[20211119 10:30:04.067] Torrent session shutdown: done waiting
+[20211119 10:30:04.087] UDP: Stopping UDP threads for 0.0.0.0:64110
+[20211119 10:30:04.107] UDP: Stopping UDP threads for [::]:64110
+[20211119 10:30:04.109] Stopping network threads
+[20211119 10:30:05.011] Network_ReleaseSockets: deleting 7EventFD
+[20211119 10:30:05.011] Network_ReleaseSockets: deleting 19UpnpBroadcastSocket
+[20211119 10:30:05.011] Network_ReleaseSockets: deleting 19UpnpBroadcastSocket
+[20211119 10:30:05.011] Network_ReleaseSockets: deleting 13NetlinkSocket
+[20211119 10:30:05.011] Network_ReleaseSockets: deleting 24UpnpNotifyListenerSocket
+[20211119 10:30:05.011] Network_ReleaseSockets: deleting 15NatPmpUdpSocket
+[20211119 10:30:05.011] Network_ReleaseSockets: deleting 20PeerListenConnection
+[20211119 10:30:05.011] Network_ReleaseSockets: deleting 20PeerListenConnection
+[20211119 10:30:05.011] Network_ReleaseSockets: all sockets have been released
+[20211119 10:30:05.012] WORKER[0x000055bd85dcb8c0]: thread stop
+[20211119 10:30:05.012] WORKER[0x000055bd85dcb8c0]: deleted
+[20211119 10:30:05.012] WORKER[0x000055bd85dbb370]: deleted
+[20211119 10:30:05.012] WORKER[0x000055bd85dc98d0]: deleted
+[20211119 10:30:05.012] WORKER[0x000055bd85dc9b90]: deleted
+[20211119 10:30:05.012] WORKER[0x000055bd85dc9e50]: deleted
+[20211119 10:30:05.012] WORKER[0x000055bd85dca110]: deleted
+[20211119 10:30:05.012] WORKER[0x000055bd85dca3d0]: deleted
+[20211119 10:30:05.012] WORKER[0x000055bd85dca690]: deleted
+[20211119 10:30:05.012] WORKER[0x000055bd85dca950]: deleted
+[20211119 10:30:05.012] WORKER[0x000055bd85dcac10]: deleted
+[20211119 10:30:05.012] WORKER[0x000055bd85dcafe0]: deleted
+[20211119 10:30:05.012] WORKER[0x000055bd85dcb2a0]: deleted
+[20211119 10:30:05.012] WORKER[0x000055bd85dcb560]: deleted
+[20211119 10:30:05.012] Shutdown. Saving config sync.dat

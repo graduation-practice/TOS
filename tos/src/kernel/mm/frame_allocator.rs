@@ -107,7 +107,7 @@ lazy_static! {
 }
 
 pub fn frame_alloc() -> Option<FrameTracker> {
-    println!("enter frame_alloc!");
+    // println!("enter frame_alloc!");
     FRAME_ALLOCATOR.lock().alloc()
     // .map(|ppn| FrameTracker::new(ppn))
 }
