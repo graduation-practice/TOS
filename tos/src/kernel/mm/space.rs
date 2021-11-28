@@ -178,11 +178,13 @@ impl MemorySet {
         memory_set
     }
     pub fn activate(&self) {
-        let satp = self.page_table.token();
+        let satp = 8usize << 60 | self.page_table.root.ppn.0;
+        println!("active page_table!");
         unsafe {
             satp::write(satp);
             asm!("sfence.vma");
         }
+        println!("active page_table!");
     }
 
     // fn from_elf(elf_data: &[u8]) -> (Self, usize, usize);

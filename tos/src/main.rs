@@ -58,6 +58,9 @@ pub fn rust_main() -> ! {
     //     ekernel as usize - 0x80200000 + 0x80200000,
     //     0x88000000 as u32,
     // );
+    // use alloc::string::String;
+    // let mut a = String::new();
+    // a.push('c');
     tos::kernel::init();
     // tos::kernel::mm::frame_allocator::frame_allocator_test();
     // panic!("end of rust_main");
@@ -65,5 +68,8 @@ pub fn rust_main() -> ! {
     // unsafe {
     //     *(0xdeadbeef as *mut u64) = 42;
     // };
+
+    // use riscv::register::satp;
+    // println!("{:#?}", satp::read().ppn());
     loop {}
 }

@@ -3,11 +3,13 @@ use super::frame_allocator::{frame_alloc, frame_dealloc, FrameTracker};
 use super::space::{MapArea, MapPermission, MapType};
 use crate::arch::config::{KERNEL_STACK_TOP, MEMORY_END};
 use crate::console::print;
+use crate::kernel::process::process::KERNEL_PROCESS;
 use alloc::collections::BTreeMap;
 use alloc::vec;
 use alloc::vec::Vec;
 use bitflags::*;
 use core::slice::from_raw_parts_mut;
+use lazy_static::lazy_static;
 use riscv::asm::{sfence_vma, sfence_vma_all};
 use riscv::register::satp;
 bitflags! {
@@ -195,6 +197,7 @@ impl PageTable {
     }
 
     pub unsafe fn activate(&self) {
+        println!("enter active:");
         let old_token = Self::active_token();
         let new_token = self.token();
         println!("switch satp from {:#x} to {:#x}", old_token, new_token);
@@ -206,8 +209,20 @@ impl PageTable {
     }
 }
 
+lazy_static! {
+    /// 请通过内核进程而非此变量来映射内核栈，因为映射涉及到页框的创建和保存
+    pub static ref KERNEL_PAGE_TABLE: &'static PageTable =
+        unsafe { &*(&KERNEL_PROCESS.inner.lock().memory_set.page_table as *const PageTable) };
+}
+
 pub fn kernel_page_table() -> PageTable {
+    println!("enter new kernel page table!");
     let frame = frame_alloc().unwrap();
+
+    // use riscv::register::satp;
+    //TODO 加print 不触发page fault
+    println!("{}", frame.ppn);
+    println!("{:#x}", satp::read().bits());
     VPN::from(frame.ppn)
         .get_array::<PTEFlags>()
         .fill(PTEFlags::E);
@@ -271,5 +286,6 @@ pub fn kernel_page_table() -> PageTable {
         .fill(PTEFlags::E);
     *pte = PTE::new(frame.ppn, PTEFlags::V);
     page_table.frames.push(frame);
+    println!("sucess init kernel page table");
     page_table
 }

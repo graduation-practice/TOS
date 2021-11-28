@@ -1,6 +1,6 @@
 MAKEFILE_DIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 target := riscv64imac-unknown-none-elf
-rustsbi := ../bootloader/rustsbi-qemu.bin
+rustsbi := ../bootloader/rustsbi-qemuv1.bin
 mode := debug
 kernel := $(MAKEFILE_DIR)target/$(target)/$(mode)/tos
 bin := $(MAKEFILE_DIR)target/$(target)/$(mode)/kernel.bin
@@ -33,7 +33,12 @@ run: build qemu
 read: build
 	rust-objdump -all $(kernel)
 
+
 show: 
-	riscv64-unknown-elf-addr2line -e  ./target/riscv64imac-unknown-none-elf/debug/tos $(VA)
-read: 
-	rust-objdump -all ./target/riscv64imac-unknown-none-elf/debug/tos 
+	riscv64-unknown-elf-addr2line -e  ./target/riscv64imac-unknown-none-elf/debug/tos  $(VA) 
+
+debug:
+	@tmux new-session -d \
+		"qemu-system-riscv64 -machine virt -nographic -bios $(rustsbi) -device loader,file=$(bin),addr=0x80200000 -s -S" && \
+		tmux split-window -h "riscv64-unknown-elf-gdb -ex 'file $(kernel)' -ex 'set arch riscv:rv64' -ex 'target remote localhost:12345'" && \
+		tmux -2 attach-session -d

@@ -48,7 +48,7 @@ pub fn handle_trap(tf: &mut TrapFrame) {
         // Trap::Exception(Exception::StorePageFault) => page_fault(tf),
         _ => {
             println!(
-                "Unsupported trap is excepeion {}, code {}, stval = {:?}!",
+                "Unsupported trap is excepeion {}, code {}, stval = {:#x}!",
                 scause::read().is_exception(),
                 scause::read().code(),
                 stval::read()

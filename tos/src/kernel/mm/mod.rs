@@ -4,6 +4,7 @@ pub mod heap_allocator;
 pub mod page_table;
 pub mod space;
 use core::iter::Map;
+pub use page_table::KERNEL_PAGE_TABLE;
 use space::KERNEL_SPACE;
 use space::{MapArea, MapPermission, MemorySet};
 pub fn init() {
@@ -12,9 +13,13 @@ pub fn init() {
     frame_allocator::init();
     // println!("success init frame allocator");
 
+    unsafe {
+        page_table::KERNEL_PAGE_TABLE.activate();
+    }
+
     //TODO 下面两句会触发code = 5 的exception
     // println!("create pt!");
-    //let pt = page_table::PageTable::new();
+
     // let frame = frame_allocator::frame_alloc().unwrap();
 
     // println!("{} ", pt.root.ppn.0);

@@ -14,14 +14,15 @@ lazy_static! {
     /// 内核进程，所有内核线程都属于该进程。
     /// 通过此进程来进行内核栈的分配
     pub static ref KERNEL_PROCESS: Arc<Process> = {
-        println!("init kernel process");
+        // println!("init kernel process");
         Arc::new(Process {
             pid: 0,
             inner: Mutex::new(ProcessInner {
-                cwd: String::from("/"),
+                // cwd: String::from("/"),
                 memory_set: MemorySet {
                     page_table: crate::kernel::mm::page_table::kernel_page_table(),
                     areas: BTreeMap::<VARangeOrd, MapArea>::new(),
+
                 },
                 // fd_table: vec![Some(STDIN.clone()), Some(STDOUT.clone())],
                 // parent: Weak::new(),
@@ -34,7 +35,11 @@ lazy_static! {
 }
 
 pub type Pid = usize;
-
+pub fn new() -> usize {
+    println!("enter test");
+    let a: usize = 1;
+    a
+}
 pub struct Process {
     pub pid: Pid,
     /// 可变的部分。如果要更高的细粒度，去掉 ProcessInner 的 Mutex，给里面的
@@ -44,7 +49,7 @@ pub struct Process {
 
 pub struct ProcessInner {
     /// 当前工作目录
-    pub cwd: String,
+    // pub cwd: String,
     /// 进程中的线程公用页表 / 内存映射
     pub memory_set: MemorySet,
     // 文件描述符

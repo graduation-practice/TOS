@@ -57,7 +57,6 @@ impl From<VA> for VPN {
 }
 impl From<usize> for PPN {
     fn from(v: usize) -> Self {
-        // println!("usize -> ppn");
         Self(v)
     }
 }
@@ -349,8 +348,6 @@ impl VARangeOrd {
     pub fn vpn_range(&self) -> VPNRange {
         self.0.start.floor()..self.0.end.ceil()
     }
-
-
 }
 
 impl Ord for VARangeOrd {
