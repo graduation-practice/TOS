@@ -141,18 +141,20 @@ pub fn frame_allocator_test() {
 }
 
 /// init frame allocator
-pub fn init() {
+pub fn init_allocator() {
     extern "C" {
         fn ekernel();
     }
 
     FRAME_ALLOCATOR.lock().init(
-        VA::from(ekernel as usize + KERNEL_MAP_OFFSET).ceil().into(),
-        VA::from(ekernel as usize + KERNEL_MAP_OFFSET + MEMORY_SIZE)
+        // VA::from(ekernel as usize + KERNEL_MAP_OFFSET).ceil().into(),
+        // VA::from(ekernel as usize + KERNEL_MAP_OFFSET + MEMORY_SIZE)
+        VA::from(ekernel as usize ).ceil().into(),
+        VA::from(ekernel as usize +MEMORY_SIZE)
             .floor()
             .into(),
     );
 
     //TODO debug 加了print语句后不触发page fault bug
-    println!("init frame allocator end!");
+    println!("success init frame allocator!");
 }

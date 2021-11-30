@@ -215,6 +215,7 @@ lazy_static! {
         unsafe { &*(&KERNEL_PROCESS.inner.lock().memory_set.page_table as *const PageTable) };
 }
 
+
 pub fn kernel_page_table() -> PageTable {
     println!("enter new kernel page table!");
     let frame = frame_alloc().unwrap();

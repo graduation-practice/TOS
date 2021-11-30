@@ -15,7 +15,22 @@ fn clear_bss() {
         fn sbss();
         fn ebss();
     }
-    (sbss as usize..ebss as usize).for_each(|a| unsafe { (a as *mut u8).write_volatile(0) });
+    
+    
+    unsafe {
+        let mut cur = sbss as *mut usize;
+        let end = ebss as *mut usize;
+        while cur < end {
+            core::ptr::write_volatile(cur, core::mem::zeroed());
+            cur = cur.offset(1);
+        }
+
+        // 测试后面的内存是否能访问
+        cur = (crate::tos::arch::config::MEMORY_END as *mut usize).offset(-1);
+        *cur = 0x1234_5678;
+        assert_eq!(*cur, 0x1234_5678);
+    }
+    
 }
 
 #[no_mangle]

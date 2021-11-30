@@ -4,18 +4,18 @@ pub mod heap_allocator;
 pub mod page_table;
 pub mod space;
 use core::iter::Map;
-pub use page_table::KERNEL_PAGE_TABLE;
+// pub use p:KERNEL_PAGE_TABLE;
 use space::KERNEL_SPACE;
 use space::{MapArea, MapPermission, MemorySet};
-pub fn init() {
+pub fn init_mm() {
     heap_allocator::init_heap();
     // println!("success init heap allocator");
-    frame_allocator::init();
+    frame_allocator::init_allocator();
     // println!("success init frame allocator");
 
-    unsafe {
-        page_table::KERNEL_PAGE_TABLE.activate();
-    }
+    // unsafe {
+    //     page_table::KERNEL_PAGE_TABLE.activate();
+    // }
 
     //TODO 下面两句会触发code = 5 的exception
     // println!("create pt!");
