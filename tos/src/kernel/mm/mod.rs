@@ -4,6 +4,10 @@ pub mod heap_allocator;
 pub mod page_table;
 pub mod space;
 use core::iter::Map;
+
+use crate::kernel::mm::address::VARangeOrd;
+use crate::kernel::mm::page_table::kernel_page_table;
+use alloc::collections::BTreeMap;
 // pub use p:KERNEL_PAGE_TABLE;
 use space::KERNEL_SPACE;
 use space::{MapArea, MapPermission, MemorySet};
@@ -13,6 +17,8 @@ pub fn init_mm() {
     frame_allocator::init_allocator();
     // println!("success init frame allocator");
 
+    let area = BTreeMap::<VARangeOrd, MapArea>::new();
+    
     // unsafe {
     //     page_table::KERNEL_PAGE_TABLE.activate();
     // }
@@ -24,7 +30,7 @@ pub fn init_mm() {
 
     // println!("{} ", pt.root.ppn.0);
 
-    frame_allocator::frame_allocator_test();
+    // frame_allocator::frame_allocator_test();
     // kernel_remap();
     // KERNEL_SPACE.lock().activate();
     // println!("++++ setup memory!    ++++");

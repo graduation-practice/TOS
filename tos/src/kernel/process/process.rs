@@ -29,7 +29,7 @@ lazy_static! {
 
                 // fd_table: vec![Some(STDIN.clone()), Some(STDOUT.clone())],
                 // parent: Weak::new(),
-                child: Vec::new(),
+                // child: Vec::new(),
                 // child_exited: Vec::new(),
                 // wake_callbacks: Vec::new(),
             }),
@@ -64,7 +64,7 @@ pub struct ProcessInner {
     // 父进程
     // pub parent: Weak<Process>,
     // 子进程
-    pub child: Vec<Weak<Process>>,
+    // pub child: Vec<Weak<Process>>,
     // 已经退出了的子进程 (进程ID, 弱引用，exit_status)，其中 exit_status
     // 只有低 8 bit 有效
     // pub child_exited: Vec<(Pid, Weak<Process>, i32)>,

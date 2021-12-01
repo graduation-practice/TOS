@@ -111,7 +111,7 @@ impl crate::arch::trap_context::Trap for TrapImpl {
             // sie::set_sext();
             // // 开启 S 态软件中断
             // sie::set_ssoft();
-            // sstatus::set_sie();
+            sstatus::set_sie();
         }
 
         // XXX
