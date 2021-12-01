@@ -15,7 +15,7 @@ pub const MEMORY_START: usize = 0xFFFF_FFC0_8000_0000;
 /// 内存大小
 pub const MEMORY_SIZE: usize = 0x80_0000;
 
-pub const MEMORY_END: usize = 0x8080_0000;
+pub const MEMORY_END: usize = 0xFFFF_FFC0_8080_0000;
 /// PAGE_SIZE = 1 << PAGE_SIZE_BITS
 pub const PAGE_SIZE_BITS: usize = 12;
 /// MMIO 起始地址

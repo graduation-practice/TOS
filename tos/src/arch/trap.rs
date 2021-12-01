@@ -80,18 +80,15 @@
 
 use core::intrinsics::transmute;
 #[macro_use]
-use crate::warn;
 use riscv::register::{
     scause::{Exception, Interrupt, Scause, Trap},
     sepc,
     sstatus::{self, SPP},
-    stvec,
-    stval,
+    stval, stvec,
 };
 
 use super::timer;
 use crate::arch::trap_context::TrapFrameImpl;
-
 
 global_asm!(include_str!("./trap.asm"));
 extern "C" {
@@ -244,6 +241,4 @@ pub fn handle_trap(trap_frame: &mut TrapFrameImpl, scause: Scause, stval: usize)
 //     };
 // }
 
-fn handle_pagefault(s:usize) {
-
-}
+fn handle_pagefault(s: usize) {}

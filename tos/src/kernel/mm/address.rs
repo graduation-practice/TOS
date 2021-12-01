@@ -145,6 +145,7 @@ impl VPN {
             idx[i] = vpn & 511;
             vpn >>= 9;
         }
+
         idx
     }
 

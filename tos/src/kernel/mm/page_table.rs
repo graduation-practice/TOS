@@ -256,7 +256,7 @@ pub fn kernel_page_table() -> PageTable {
         fn ebss();
         fn ekernel();
     }
-    let areas: [(VARange, PTEFlags); 5] = [
+    let areas: [(VARange, PTEFlags); 2] = [
         (
             (stext as usize).into()..(etext as usize).into(),
             PTEFlags::R | PTEFlags::X,
@@ -265,18 +265,18 @@ pub fn kernel_page_table() -> PageTable {
             (srodata as usize).into()..(erodata as usize).into(),
             PTEFlags::R,
         ),
-        (
-            (sdata as usize).into()..(edata as usize).into(),
-            PTEFlags::R | PTEFlags::W,
-        ),
-        (
-            (sbss_with_stack as usize).into()..(ebss as usize).into(),
-            PTEFlags::R | PTEFlags::W,
-        ),
-        (
-            (ekernel as usize).into()..MEMORY_END.into(),
-            PTEFlags::R | PTEFlags::W,
-        ),
+        // (
+        //     (sdata as usize).into()..(edata as usize).into(),
+        //     PTEFlags::R | PTEFlags::W,
+        // ),
+        // (
+        //     (sbss_with_stack as usize).into()..(ebss as usize).into(),
+        //     PTEFlags::R | PTEFlags::W,
+        // ),
+        // (
+        //     (ekernel as usize).into()..MEMORY_END.into(),
+        //     PTEFlags::R | PTEFlags::W,
+        // ),
     ];
 
     for area in areas {
@@ -303,5 +303,4 @@ pub fn kernel_page_table() -> PageTable {
     page_table.frames.push(frame);
     println!("sucess init kernel page table");
     page_table
-
 }
