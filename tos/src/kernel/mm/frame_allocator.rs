@@ -147,12 +147,10 @@ pub fn init_allocator() {
     }
 
     FRAME_ALLOCATOR.lock().init(
-        // VA::from(ekernel as usize + KERNEL_MAP_OFFSET).ceil().into(),
-        // VA::from(ekernel as usize + KERNEL_MAP_OFFSET + MEMORY_SIZE)
-        VA::from(ekernel as usize ).ceil().into(),
-        VA::from(ekernel as usize +MEMORY_SIZE)
-            .floor()
-            .into(),
+        VA::from(ekernel as usize + KERNEL_MAP_OFFSET).ceil().into(),
+        VA::from(ekernel as usize + KERNEL_MAP_OFFSET + MEMORY_SIZE).floor().into()
+        // VA::from(ekernel as usize).ceil().into(),
+        // VA::from(ekernel as usize + MEMORY_SIZE).floor().into(),
     );
 
     //TODO debug 加了print语句后不触发page fault bug

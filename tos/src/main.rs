@@ -5,6 +5,7 @@
 #![feature(alloc_error_handler)]
 global_asm!(include_str!("boot/entry.asm"));
 use tos;
+use tos::arch::sbi::shutdown;
 use tos::println;
 extern crate alloc;
 #[macro_use]
@@ -15,8 +16,7 @@ fn clear_bss() {
         fn sbss();
         fn ebss();
     }
-    
-    
+
     unsafe {
         let mut cur = sbss as *mut usize;
         let end = ebss as *mut usize;
@@ -30,7 +30,6 @@ fn clear_bss() {
         *cur = 0x1234_5678;
         assert_eq!(*cur, 0x1234_5678);
     }
-    
 }
 
 #[no_mangle]
@@ -76,7 +75,7 @@ pub fn rust_main() -> ! {
     // use alloc::string::String;
     // let mut a = String::new();
     // a.push('c');
-    tos::kernel::init();
+    tos::kernel::init_kernel();
     // tos::kernel::mm::frame_allocator::frame_allocator_test();
     // panic!("end of rust_main");
 
@@ -86,5 +85,6 @@ pub fn rust_main() -> ! {
 
     // use riscv::register::satp;
     // println!("{:#?}", satp::read().ppn());
-    loop {}
+    // loop {}
+    shutdown();
 }

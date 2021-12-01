@@ -1,10 +1,11 @@
 use super::address::{VARange, VARangeOrd, PPN, VA, VPN};
-use super::frame_allocator::{frame_alloc, frame_dealloc, FrameTracker};
+use super::frame_allocator::{frame_alloc, frame_dealloc, Frame, FrameTracker};
 use super::space::{MapArea, MapPermission, MapType};
 use crate::arch::config::{KERNEL_STACK_TOP, MEMORY_END};
 use crate::console::print;
 use crate::kernel::process::process::KERNEL_PROCESS;
 use alloc::collections::BTreeMap;
+use alloc::sync::Arc;
 use alloc::vec;
 use alloc::vec::Vec;
 use bitflags::*;
@@ -215,7 +216,6 @@ lazy_static! {
         unsafe { &*(&KERNEL_PROCESS.inner.lock().memory_set.page_table as *const PageTable) };
 }
 
-
 pub fn kernel_page_table() -> PageTable {
     println!("enter new kernel page table!");
     let frame = frame_alloc().unwrap();
@@ -223,10 +223,11 @@ pub fn kernel_page_table() -> PageTable {
     // use riscv::register::satp;
     //TODO 加print 不触发page fault
     println!("{}", frame.ppn);
-    println!("{:#x}", satp::read().bits());
+    // println!("{:#x}", satp::read().bits());
     VPN::from(frame.ppn)
         .get_array::<PTEFlags>()
         .fill(PTEFlags::E);
+
     let mut page_table = PageTable {
         root: frame,
         frames: vec![],

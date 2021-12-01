@@ -1,6 +1,6 @@
 use crate::kernel::mm::address::VARangeOrd;
-use crate::kernel::mm::space::{MapArea, MemorySet};
 use crate::kernel::mm::page_table::kernel_page_table;
+use crate::kernel::mm::space::{MapArea, MemorySet};
 use alloc::{
     boxed::Box,
     collections::BTreeMap,
@@ -18,7 +18,6 @@ lazy_static! {
         // println!("init kernel process");
         Arc::new(Process {
             pid: 0,
-            test:new(),
             inner: Mutex::new(ProcessInner {
                 // cwd: String::from("/"),
                 memory_set: MemorySet {
@@ -37,14 +36,9 @@ lazy_static! {
 }
 
 pub type Pid = usize;
-pub fn new() -> usize {
-    println!("enter test");
-    let a: usize = 1;
-    a
-}
+
 pub struct Process {
     pub pid: Pid,
-    pub test:usize,
     /// 可变的部分。如果要更高的细粒度，去掉 ProcessInner 的 Mutex，给里面的
     /// memory_set 等等分别加上
     pub inner: Mutex<ProcessInner>,

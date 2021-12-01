@@ -25,26 +25,28 @@ pub fn init_mm() {
     // println!("{} ", pt.root.ppn.0);
 
     // frame_allocator::frame_allocator_test();
+    kernel_remap();
     // KERNEL_SPACE.lock().activate();
-    // println!("++++ setup memory!    ++++");
+    println!("++++ setup memory!    ++++");
 }
 
-// pub fn kernel_remap() {
-//     extern "C" {
-//         fn bootstack(); //定义在src/boot/entry64.asm
-//         fn bootstacktop(); //定义在src/boot/entry64.asm
-//     }
-//     let mut memory_set = MemorySet::new();
-//     let mut map_area = MapArea::new(
-//         (bootstack as usize).into(),
-//         (bootstacktop as usize).into(),
-//         space::MapType::Linear,
-//         MapPermission::R,
-//     );
+pub fn kernel_remap() {
+    extern "C" {
+        fn boot_stack(); //定义在src/boot/entry64.asm
+        fn boot_stack_top(); //定义在src/boot/entry64.asm
+    }
+    let mut memory_set = MemorySet::new();
 
-//     // 將启动栈 push 进来
-//     memory_set.push(map_area, None);
-//     unsafe {
-//         memory_set.activate();
-//     }
-// }
+    let mut map_area = MapArea::new(
+        (boot_stack as usize).into(),
+        (boot_stack_top as usize).into(),
+        space::MapType::Linear,
+        MapPermission::R,
+    );
+
+    // 將启动栈 push 进来
+    memory_set.push(map_area, None);
+    unsafe {
+        memory_set.activate();
+    }
+}

@@ -184,7 +184,7 @@ impl MemorySet {
             satp::write(satp);
             asm!("sfence.vma");
         }
-        println!("active page_table!");
+        // println!("active page_table!");
     }
 
     // fn from_elf(elf_data: &[u8]) -> (Self, usize, usize);

@@ -1,6 +1,6 @@
 MAKEFILE_DIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 target := riscv64imac-unknown-none-elf
-rustsbi := ../bootloader/rustsbi-qemuv2.bin
+rustsbi := ../bootloader/rustsbi-qemu.bin
 mode := debug
 kernel := $(MAKEFILE_DIR)target/$(target)/$(mode)/tos
 bin := $(MAKEFILE_DIR)target/$(target)/$(mode)/kernel.bin
