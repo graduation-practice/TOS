@@ -34,6 +34,10 @@ fn clear_bss() {
 
 #[no_mangle]
 pub fn rust_main() -> ! {
+    unsafe {
+        // 允许内核读写用户态内存
+        riscv::register::sstatus::set_sum();
+    }
     //TODO 11.18 晚提交在运行 rust-objdump -all 会有err
     // error: address range table at offset 0x7380 has a premature terminator entry at offset 0x7390
 
@@ -62,7 +66,7 @@ pub fn rust_main() -> ! {
     println!(".bss [{:#x}, {:#x})", sbss as usize, ebss as usize);
 
     tos::arch::trap::init();
-    tos::arch::timer::init();
+    // tos::arch::timer::init();
 
     // extern "C" {
     //     fn ekernel();make show
