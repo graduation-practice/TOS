@@ -4,5 +4,6 @@ pub mod sbi;
 pub mod timer;
 pub mod trap;
 pub mod trap_context;
+pub mod logger;
 use riscv::register::{scause::Scause, sstatus::Sstatus};
 //TODO 统一底层接口

@@ -233,11 +233,10 @@ lazy_static! {
 pub fn kernel_page_table() -> PageTable {
     println!("enter new kernel page table!");
     let frame = frame_alloc().unwrap();
-
     // use riscv::register::satp;
     //TODO 加print 不触发page fault
-    println!("{}", frame.ppn);
-    println!("{:#x}", satp::read().bits());
+    // println!("{}", frame.ppn);
+    // println!("{:#x}", satp::read().bits());
     VPN::from(frame.ppn)
         .get_array::<PTEFlags>()
         .fill(PTEFlags::E);
@@ -304,4 +303,5 @@ pub fn kernel_page_table() -> PageTable {
     page_table.frames.push(frame);
     println!("sucess init kernel page table");
     page_table
+
 }

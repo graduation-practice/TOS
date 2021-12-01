@@ -25,7 +25,6 @@ pub fn init() {
     }
     // 设置下一次时钟中断
     set_next_timeout();
-    println!("***init clock***");
 }
 
 pub fn tick() {

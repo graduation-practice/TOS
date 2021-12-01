@@ -8,8 +8,11 @@ use tos;
 use tos::arch::sbi::shutdown;
 use tos::println;
 extern crate alloc;
+use tos::arch::trap::TrapImpl;
+use tos::arch::trap_context::Trap;
 #[macro_use]
 extern crate bitflags;
+
 pub use tos::kernel::mm;
 fn clear_bss() {
     extern "C" {
@@ -65,9 +68,13 @@ pub fn rust_main() -> ! {
     );
     println!(".bss [{:#x}, {:#x})", sbss as usize, ebss as usize);
 
-    tos::arch::trap::init();
-    // tos::arch::timer::init();
-
+    TrapImpl::init();
+    tos::arch::timer::init();
+    use riscv::asm::ebreak;
+    // unsafe{
+    //     ebreak();
+    // }
+    
     // extern "C" {
     //     fn ekernel();make show
     // }
@@ -89,6 +96,6 @@ pub fn rust_main() -> ! {
 
     // use riscv::register::satp;
     // println!("{:#?}", satp::read().ppn());
-    // loop {}
-    shutdown();
+    loop {}
+    // shutdown();
 }

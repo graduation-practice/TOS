@@ -24,7 +24,7 @@ pub fn init_mm() {
 
     // println!("{} ", pt.root.ppn.0);
 
-    // frame_allocator::frame_allocator_test();
+    frame_allocator::frame_allocator_test();
     // kernel_remap();
     // KERNEL_SPACE.lock().activate();
     // println!("++++ setup memory!    ++++");

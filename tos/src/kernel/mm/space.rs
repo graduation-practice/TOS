@@ -47,6 +47,7 @@ pub struct MapArea {
 
 pub struct MemorySet {
     pub page_table: PageTable,
+    pub test: usize,
     pub areas: BTreeMap<VARangeOrd, MapArea>,
 }
 
@@ -55,6 +56,7 @@ impl MemorySet {
         // println!("new!");
         Self {
             page_table: PageTable::new(),
+            test:0,
             areas: BTreeMap::<VARangeOrd, MapArea>::new(),
         }
     }
@@ -178,6 +180,7 @@ impl MemorySet {
         memory_set
     }
     pub fn activate(&self) {
+        println!("active page_table!");
         let satp = 8usize << 60 | self.page_table.root.ppn.0;
         println!("active page_table!");
         unsafe {
