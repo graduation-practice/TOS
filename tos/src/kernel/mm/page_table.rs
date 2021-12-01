@@ -153,25 +153,39 @@ impl PageTable {
         *pte = PTE::empty();
     }
 
+    // fn find_pte_create(&mut self, vpn: VPN) -> Option<&mut PTE> {
+    //     let idxs = vpn.indexes();
+    //     let mut ppn = self.root.ppn;
+    //     let mut result: Option<&mut PTE> = None;
+    //     for i in 0..3 {
+    //         let pte = &mut ppn.get_pte_array()[idxs[i]];
+    //         if i == 2 {
+    //             result = Some(pte);
+    //             break;
+    //         }
+    //         if !pte.is_valid() {
+    //             let frame = frame_alloc().unwrap();
+    //             *pte = PTE::new(frame.ppn, PTEFlags::V);
+
+    //             self.frames.push(frame);
+    //         }
+    //         ppn = pte.ppn();
+    //     }
+    //     result
+    // }
     fn find_pte_create(&mut self, vpn: VPN) -> Option<&mut PTE> {
         let idxs = vpn.indexes();
-        let mut ppn = self.root.ppn;
-        let mut result: Option<&mut PTE> = None;
-        for i in 0..3 {
-            let pte = &mut ppn.get_pte_array()[idxs[i]];
-            if i == 2 {
-                result = Some(pte);
-                break;
-            }
+        let mut pte: &mut PTE = &mut VPN::from(self.root.ppn).get_array()[idxs[0]];
+        for &idx in &idxs[1..] {
             if !pte.is_valid() {
                 let frame = frame_alloc().unwrap();
+                VPN::from(frame.ppn).get_array::<PTE>().fill(PTE::empty());
                 *pte = PTE::new(frame.ppn, PTEFlags::V);
-
                 self.frames.push(frame);
             }
-            ppn = pte.ppn();
+            pte = &mut VPN::from(pte.ppn()).get_array()[idx];
         }
-        result
+        Some(pte)
     }
 
     /// set satp value 1000 means SV39
@@ -223,7 +237,7 @@ pub fn kernel_page_table() -> PageTable {
     // use riscv::register::satp;
     //TODO 加print 不触发page fault
     println!("{}", frame.ppn);
-    // println!("{:#x}", satp::read().bits());
+    println!("{:#x}", satp::read().bits());
     VPN::from(frame.ppn)
         .get_array::<PTEFlags>()
         .fill(PTEFlags::E);
