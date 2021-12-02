@@ -28,7 +28,7 @@ bitflags! {
 }
 impl PTEFlags {
     pub fn to_perm(&self) -> MapPermission {
-        MapPermission::from_bits(0x3c & self.bits as u8).unwrap()
+        MapPermission::from_bits(0x3c as u8 & self.bits).unwrap()
     }
 }
 #[derive(Copy, Clone)]
@@ -86,8 +86,14 @@ impl PageTable {
         match area.map_type {
             MapType::Linear => {
                 for vpn in va_range.vpn_range() {
+                    // println!("vpn_range:{:?}", vpn);
                     self.map_one(vpn, vpn.into(), area.map_perm.to_pte());
                 }
+                use riscv::asm::ebreak;
+                unsafe {
+                    ebreak();
+                }
+                println!("finish map_one");
                 // 线性映射的 area 是一段连续的地址，可以直接复制
                 if let Some(data) = data {
                     unsafe {
@@ -145,6 +151,7 @@ impl PageTable {
         let pte = self.find_pte_create(vpn).unwrap();
         assert!(!pte.is_valid(), "vpn {:?} is mapped before mapping", vpn);
         *pte = PTE::new(ppn, flags | PTEFlags::V);
+        println!("map pte: {:#x}", pte.bits);
     }
 
     pub fn unmap(&mut self, vpn: VPN) {
@@ -175,15 +182,21 @@ impl PageTable {
     // }
     fn find_pte_create(&mut self, vpn: VPN) -> Option<&mut PTE> {
         let idxs = vpn.indexes();
-        let mut pte: &mut PTE = &mut VPN::from(self.root.ppn).get_array()[idxs[0]];
+        println!("idx{:?}", idxs);
+        //获取三级PTE
+        let mut pte: &mut PTE = &mut VPN::from(self.root.ppn).get_array::<PTE>()[idxs[0]];
+
+        println!("3level: {:#x}", pte.bits);
+        //迭代获取叶PTE
         for &idx in &idxs[1..] {
             if !pte.is_valid() {
+                println!("enter");
                 let frame = frame_alloc().unwrap();
                 VPN::from(frame.ppn).get_array::<PTE>().fill(PTE::empty());
                 *pte = PTE::new(frame.ppn, PTEFlags::V);
                 self.frames.push(frame);
             }
-            pte = &mut VPN::from(pte.ppn()).get_array()[idx];
+            pte = &mut VPN::from(pte.ppn()).get_array::<PTE>()[idx];
         }
         Some(pte)
     }
@@ -229,18 +242,16 @@ lazy_static! {
     pub static ref KERNEL_PAGE_TABLE: &'static PageTable =
         unsafe { &*(&KERNEL_PROCESS.inner.lock().memory_set.page_table as *const PageTable) };
 }
-
+use core::{fmt::Debug, iter::Step, mem::size_of};
 pub fn kernel_page_table() -> PageTable {
     println!("enter new kernel page table!");
     let frame = frame_alloc().unwrap();
     // use riscv::register::satp;
     //TODO 加print 不触发page fault
     // println!("{}", frame.ppn);
+    // println!("{:?}", size_of::<PTE>());
+    VPN::from(frame.ppn).get_array::<PTE>().fill(PTE::empty());
     // println!("{:#x}", satp::read().bits());
-    VPN::from(frame.ppn)
-        .get_array::<PTEFlags>()
-        .fill(PTEFlags::E);
-
     let mut page_table = PageTable {
         root: frame,
         frames: vec![],
@@ -256,7 +267,7 @@ pub fn kernel_page_table() -> PageTable {
         fn ebss();
         fn ekernel();
     }
-    let areas: [(VARange, PTEFlags); 2] = [
+    let areas: [(VARange, PTEFlags); 5] = [
         (
             (stext as usize).into()..(etext as usize).into(),
             PTEFlags::R | PTEFlags::X,
@@ -265,18 +276,18 @@ pub fn kernel_page_table() -> PageTable {
             (srodata as usize).into()..(erodata as usize).into(),
             PTEFlags::R,
         ),
-        // (
-        //     (sdata as usize).into()..(edata as usize).into(),
-        //     PTEFlags::R | PTEFlags::W,
-        // ),
-        // (
-        //     (sbss_with_stack as usize).into()..(ebss as usize).into(),
-        //     PTEFlags::R | PTEFlags::W,
-        // ),
-        // (
-        //     (ekernel as usize).into()..MEMORY_END.into(),
-        //     PTEFlags::R | PTEFlags::W,
-        // ),
+        (
+            (sdata as usize).into()..(edata as usize).into(),
+            PTEFlags::R | PTEFlags::W,
+        ),
+        (
+            (sbss_with_stack as usize).into()..(ebss as usize).into(),
+            PTEFlags::R | PTEFlags::W,
+        ),
+        (
+            (ekernel as usize).into()..MEMORY_END.into(),
+            PTEFlags::R | PTEFlags::W,
+        ),
     ];
 
     for area in areas {
@@ -294,11 +305,9 @@ pub fn kernel_page_table() -> PageTable {
     }
 
     let vpn = VA(KERNEL_STACK_TOP).floor().indexes()[0];
-    let pte: &mut PTE = &mut VPN::from(page_table.root.ppn).get_array()[vpn];
+    let pte: &mut PTE = &mut VPN::from(page_table.root.ppn).get_array::<PTE>()[vpn];
     let frame = frame_alloc().unwrap();
-    VPN::from(frame.ppn)
-        .get_array::<PTEFlags>()
-        .fill(PTEFlags::E);
+    VPN::from(frame.ppn).get_array::<PTE>().fill(PTE::empty());
     *pte = PTE::new(frame.ppn, PTEFlags::V);
     page_table.frames.push(frame);
     println!("sucess init kernel page table");

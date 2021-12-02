@@ -112,7 +112,7 @@ impl crate::arch::trap_context::Trap for TrapImpl {
         }
 
         // XXX
-        timer::init();
+        // timer::init();
 
         println!("mod trap initialized");
     }

@@ -4,15 +4,15 @@
 #![feature(asm)]
 #![feature(alloc_error_handler)]
 global_asm!(include_str!("boot/entry.asm"));
-use tos;
 use tos::arch::sbi::shutdown;
 use tos::println;
+use tos::{self, console::print};
 extern crate alloc;
 use tos::arch::trap::TrapImpl;
 use tos::arch::trap_context::Trap;
 #[macro_use]
 extern crate bitflags;
-
+use riscv::register::{satp, sstatus};
 pub use tos::kernel::mm;
 fn clear_bss() {
     extern "C" {
@@ -40,7 +40,13 @@ pub fn rust_main() -> ! {
     unsafe {
         // 允许内核读写用户态内存
         riscv::register::sstatus::set_sum();
+        println!("{:?}", sstatus::read().spp());
     }
+    println!("{:#x}", 0x00000 << 10 | 0xCF);
+    println!("{:#x}", 0x40000 << 10 | 0xCF);
+    println!("{:#x}", 0x80000 << 10 | 0xCF);
+    println!("{:#x}", (0xC0000 << 10) | 0xCF);
+
     //TODO 11.18 晚提交在运行 rust-objdump -all 会有err
     // error: address range table at offset 0x7380 has a premature terminator entry at offset 0x7390
 
@@ -54,6 +60,7 @@ pub fn rust_main() -> ! {
         fn edata();
         fn sbss();
         fn ebss();
+        fn sbss_with_stack();
         fn boot_stack();
         fn boot_stack_top();
     }
@@ -67,14 +74,14 @@ pub fn rust_main() -> ! {
         boot_stack as usize, boot_stack_top as usize
     );
     println!(".bss [{:#x}, {:#x})", sbss as usize, ebss as usize);
-
+    println!(".bssstack [{:#x})", sbss_with_stack as usize);
     TrapImpl::init();
-    tos::arch::timer::init();
+    // tos::arch::timer::init();
     use riscv::asm::ebreak;
     // unsafe{
     //     ebreak();
     // }
-    
+
     // extern "C" {
     //     fn ekernel();make show
     // }
@@ -91,7 +98,7 @@ pub fn rust_main() -> ! {
     // panic!("end of rust_main");
 
     // unsafe {
-    //     *(0xdeadbeef as *mut u64) = 42;
+    //     *(0xffff_ffc0_8020_0000 as *mut u64) = 42;
     // };
 
     // use riscv::register::satp;

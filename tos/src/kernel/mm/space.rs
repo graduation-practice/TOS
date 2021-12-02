@@ -35,7 +35,7 @@ bitflags! {
 
 impl MapPermission {
     pub fn to_pte(&self) -> PTEFlags {
-        PTEFlags::from_bits(self.bits as u8).unwrap()
+        PTEFlags::from_bits(self.bits).unwrap()
     }
 }
 pub struct MapArea {
@@ -56,7 +56,7 @@ impl MemorySet {
         // println!("new!");
         Self {
             page_table: PageTable::new(),
-            test:0,
+            test: 0,
             areas: BTreeMap::<VARangeOrd, MapArea>::new(),
         }
     }
