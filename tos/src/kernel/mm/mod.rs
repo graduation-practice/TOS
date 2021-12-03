@@ -16,6 +16,9 @@ pub fn init_mm() {
     // println!("success init heap allocator");
     frame_allocator::init_allocator();
     // println!("success init frame allocator");
+    // let a = MemorySet::new();
+    // let c = a.page_table.root.ppn;
+    // println!("test memory set {}", c);
 
     // let area = BTreeMap::<VARangeOrd, MapArea>::new();
 

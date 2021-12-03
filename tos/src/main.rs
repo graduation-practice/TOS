@@ -13,7 +13,7 @@ use tos::arch::trap_context::Trap;
 #[macro_use]
 extern crate bitflags;
 use riscv::register::{satp, sstatus};
-pub use tos::kernel::mm;
+pub use tos::kernel::{mm, process};
 fn clear_bss() {
     extern "C" {
         fn sbss();
@@ -37,20 +37,22 @@ fn clear_bss() {
 
 #[no_mangle]
 pub fn rust_main() -> ! {
+    use riscv::asm::ebreak;
+
     unsafe {
         // 允许内核读写用户态内存
         riscv::register::sstatus::set_sum();
         println!("{:?}", sstatus::read().spp());
     }
-    println!("{:#x}", 0x00000 << 10 | 0xCF);
-    println!("{:#x}", 0x40000 << 10 | 0xCF);
-    println!("{:#x}", 0x80000 << 10 | 0xCF);
-    println!("{:#x}", (0xC0000 << 10) | 0xCF);
+    // println!("{:#x}", 0x00000 << 10 | 0xCF);
+    // println!("{:#x}", 0x40000 << 10 | 0xCF);
+    // println!("{:#x}", 0x80000 << 10 | 0xCF);
+    // println!("{:#x}", (0xC0000 << 10) | 0xCF);
 
-    //TODO 11.18 晚提交在运行 rust-objdump -all 会有err
-    // error: address range table at offset 0x7380 has a premature terminator entry at offset 0x7390
+    // //TODO 11.18 晚提交在运行 rust-objdump -all 会有err
+    // // error: address range table at offset 0x7380 has a premature terminator entry at offset 0x7390
 
-    // println!("work");
+    // // println!("work");
     extern "C" {
         fn stext();
         fn etext();
@@ -76,9 +78,9 @@ pub fn rust_main() -> ! {
     println!(".bss [{:#x}, {:#x})", sbss as usize, ebss as usize);
     println!(".bssstack [{:#x})", sbss_with_stack as usize);
     TrapImpl::init();
-    // tos::arch::timer::init();
-    use riscv::asm::ebreak;
-    // unsafe{
+    // // tos::arch::timer::init();
+    // use riscv::asm::ebreak;
+    // unsafe {
     //     ebreak();
     // }
 
@@ -94,6 +96,7 @@ pub fn rust_main() -> ! {
     // let mut a = String::new();
     // a.push('c');
     tos::kernel::init_kernel();
+
     // tos::kernel::mm::frame_allocator::frame_allocator_test();
     // panic!("end of rust_main");
 

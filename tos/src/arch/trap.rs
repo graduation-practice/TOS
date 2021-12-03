@@ -82,7 +82,7 @@ use core::intrinsics::transmute;
 #[macro_use]
 use riscv::register::{
     scause::{Exception, Interrupt, Scause, Trap},
-    sepc,
+    sepc, sie, sscratch,
     sstatus::{self, SPP},
     stval, stvec,
 };
@@ -102,6 +102,7 @@ impl crate::arch::trap_context::Trap for TrapImpl {
     fn init() {
         unsafe {
             // 使用 Direct 模式，将中断入口设置为 `__interrupt`
+            sscratch::write(0);
             stvec::write(__trap as usize, stvec::TrapMode::Direct);
 
             // // 开启 S 态外部中断
@@ -112,7 +113,7 @@ impl crate::arch::trap_context::Trap for TrapImpl {
         }
 
         // XXX
-        // timer::init();
+        timer::init();
 
         println!("mod trap initialized");
     }

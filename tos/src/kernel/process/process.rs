@@ -22,8 +22,7 @@ lazy_static! {
                 // cwd: String::from("/"),
                 memory_set: MemorySet {
                     page_table: kernel_page_table(),
-                    test:new_test(),
-                    areas: BTreeMap::<VARangeOrd, MapArea>::new(),
+                    areas:BTreeMap::<VARangeOrd, MapArea>::new(),
 
                 },
 
@@ -38,12 +37,11 @@ lazy_static! {
 }
 
 pub type Pid = usize;
-pub fn new_test() -> usize{
-    
+pub fn new_test() -> BTreeMap<VARangeOrd, MapArea> {
     let area = BTreeMap::<VARangeOrd, MapArea>::new();
-    
+
     println!("enter new_test");
-    1
+    return area;
 }
 
 pub struct Process {
@@ -58,7 +56,6 @@ pub struct ProcessInner {
     // pub cwd: String,
     /// 进程中的线程公用页表 / 内存映射
     pub memory_set: MemorySet,
-    
     // 文件描述符
     // pub fd_table: Vec<Option<Arc<FileDescriptor>>>,
     // 父进程

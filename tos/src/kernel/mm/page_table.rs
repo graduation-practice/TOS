@@ -12,7 +12,7 @@ use bitflags::*;
 use core::slice::from_raw_parts_mut;
 use lazy_static::lazy_static;
 use riscv::asm::{sfence_vma, sfence_vma_all};
-use riscv::register::satp;
+use riscv::register::{satp, sscratch};
 bitflags! {
     pub struct PTEFlags: u8 {
         const E =      0;
@@ -90,9 +90,9 @@ impl PageTable {
                     self.map_one(vpn, vpn.into(), area.map_perm.to_pte());
                 }
                 use riscv::asm::ebreak;
-                unsafe {
-                    ebreak();
-                }
+                // unsafe {
+                //     ebreak();
+                // }
                 println!("finish map_one");
                 // 线性映射的 area 是一段连续的地址，可以直接复制
                 if let Some(data) = data {
@@ -151,7 +151,7 @@ impl PageTable {
         let pte = self.find_pte_create(vpn).unwrap();
         assert!(!pte.is_valid(), "vpn {:?} is mapped before mapping", vpn);
         *pte = PTE::new(ppn, flags | PTEFlags::V);
-        println!("map pte: {:#x}", pte.bits);
+        // println!("map pte: {:#x}", pte.bits);
     }
 
     pub fn unmap(&mut self, vpn: VPN) {
@@ -182,15 +182,14 @@ impl PageTable {
     // }
     fn find_pte_create(&mut self, vpn: VPN) -> Option<&mut PTE> {
         let idxs = vpn.indexes();
-        println!("idx{:?}", idxs);
-        //获取三级PTE
+        // println!("idx{:?}", idxs);
+        //获取PTE
         let mut pte: &mut PTE = &mut VPN::from(self.root.ppn).get_array::<PTE>()[idxs[0]];
 
-        println!("3level: {:#x}", pte.bits);
-        //迭代获取叶PTE
+        // println!("3level: {:#x}", pte.bits);
+        //
         for &idx in &idxs[1..] {
             if !pte.is_valid() {
-                println!("enter");
                 let frame = frame_alloc().unwrap();
                 VPN::from(frame.ppn).get_array::<PTE>().fill(PTE::empty());
                 *pte = PTE::new(frame.ppn, PTEFlags::V);
@@ -303,13 +302,16 @@ pub fn kernel_page_table() -> PageTable {
             None,
         );
     }
-
+    println!("{:#x}", KERNEL_STACK_TOP);
     let vpn = VA(KERNEL_STACK_TOP).floor().indexes()[0];
+    println!("{}", vpn);
     let pte: &mut PTE = &mut VPN::from(page_table.root.ppn).get_array::<PTE>()[vpn];
+    println!("{:#x}", pte.bits);
     let frame = frame_alloc().unwrap();
     VPN::from(frame.ppn).get_array::<PTE>().fill(PTE::empty());
     *pte = PTE::new(frame.ppn, PTEFlags::V);
     page_table.frames.push(frame);
     println!("sucess init kernel page table");
+    println!("sscrach: {:#x}", sscratch::read());
     page_table
 }

@@ -47,16 +47,14 @@ pub struct MapArea {
 
 pub struct MemorySet {
     pub page_table: PageTable,
-    pub test: usize,
     pub areas: BTreeMap<VARangeOrd, MapArea>,
 }
 
 impl MemorySet {
     pub fn new() -> Self {
-        // println!("new!");
+        println!("new!");
         Self {
             page_table: PageTable::new(),
-            test: 0,
             areas: BTreeMap::<VARangeOrd, MapArea>::new(),
         }
     }
