@@ -1,7 +1,7 @@
 extern crate alloc;
 use super::address::{PA, PPN, VA};
 use crate::arch::config::{KERNEL_MAP_OFFSET, PAGE_SIZE, PAGE_SIZE_BITS};
-use crate::{arch::config::MEMORY_SIZE, arch::config::MEMORY_START, console::print};
+use crate::{arch::config::MEMORY_END, arch::config::MEMORY_START, console::print};
 use alloc::sync::Arc;
 use alloc::vec::Vec;
 use core::fmt::{self, Debug, Formatter};
@@ -150,7 +150,7 @@ pub fn init_allocator() {
         // VA::from(ekernel as usize + KERNEL_MAP_OFFSET).ceil().into(),
         // VA::from(ekernel as usize + KERNEL_MAP_OFFSET + MEMORY_SIZE).floor().into()
         VA::from(ekernel as usize).ceil().into(),
-        VA::from(ekernel as usize + MEMORY_SIZE).floor().into(),
+        VA::from(MEMORY_END).floor().into(),
     );
 
     //TODO debug 加了print语句后不触发page fault bug

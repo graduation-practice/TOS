@@ -183,8 +183,8 @@ impl MemorySet {
         println!("active page_table!");
         unsafe {
             satp::write(satp);
-            println!("{:?}", satp::read().mode());
-            riscv::asm::ebreak();
+            // println!("{:?}", satp::read().mode());
+            // riscv::asm::ebreak();
             asm!("sfence.vma");
             println!("1");
         }

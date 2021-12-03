@@ -6,9 +6,9 @@
      auipc   sp, %pcrel_hi(boot_stack)
      addi    sp, sp, %pcrel_lo(.A)   # 得到物理地址
      add     sp, sp, t1              # 得到虚拟地址
-     # sp = boot_stack + 0x1000 * a0+1
+     # sp = boot_stack + 0x1000 * a0+4
      li      t2, 4096
-     addi    t3, a0, 1
+     addi    t3, a0, 4
      mul     t2, t2, t3
      c.add   sp, t2
 
@@ -25,7 +25,7 @@
      .align 12
      .globl boot_stack
  boot_stack:
-     .zero 4096 * 2
+     .zero 4096 * 4
      .globl boot_stack_top
  boot_stack_top:
 
