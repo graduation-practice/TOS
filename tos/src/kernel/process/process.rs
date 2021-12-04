@@ -18,7 +18,7 @@ lazy_static! {
         // println!("init kernel process");
         Arc::new(Process {
             pid: 0,
-            inner: Mutex::new(ProcessInner {
+            inner: ProcessInner {
                 // cwd: String::from("/"),
                 memory_set: MemorySet {
                     page_table: kernel_page_table(),
@@ -31,7 +31,7 @@ lazy_static! {
                 // child: Vec::new(),
                 // child_exited: Vec::new(),
                 // wake_callbacks: Vec::new(),
-            }),
+            },
         })
     };
 }
@@ -48,7 +48,7 @@ pub struct Process {
     pub pid: Pid,
     /// 可变的部分。如果要更高的细粒度，去掉 ProcessInner 的 Mutex，给里面的
     /// memory_set 等等分别加上
-    pub inner: Mutex<ProcessInner>,
+    pub inner: ProcessInner,
 }
 
 pub struct ProcessInner {

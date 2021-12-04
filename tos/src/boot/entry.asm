@@ -8,7 +8,7 @@
      add     sp, sp, t1              # 得到虚拟地址
      # sp = boot_stack + 0x1000 * a0+4
      li      t2, 4096
-     addi    t3, a0, 4
+     addi    t3, a0, 2
      mul     t2, t2, t3
      c.add   sp, t2
 
@@ -25,7 +25,7 @@
      .align 12
      .globl boot_stack
  boot_stack:
-     .zero 4096 * 4
+     .zero 4096 * 2
      .globl boot_stack_top
  boot_stack_top:
 

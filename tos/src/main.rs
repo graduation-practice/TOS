@@ -16,12 +16,12 @@ use riscv::register::{satp, sstatus};
 pub use tos::kernel::{mm, process};
 fn clear_bss() {
     extern "C" {
-        fn sbss();
+        fn sbss_with_stack();
         fn ebss();
     }
 
     unsafe {
-        let mut cur = sbss as *mut usize;
+        let mut cur = sbss_with_stack as *mut usize;
         let end = ebss as *mut usize;
         while cur < end {
             core::ptr::write_volatile(cur, core::mem::zeroed());
@@ -95,6 +95,7 @@ pub fn rust_main() -> ! {
     // use alloc::string::String;
     // let mut a = String::new();
     // a.push('c');
+
     tos::kernel::init_kernel();
 
     // tos::kernel::mm::frame_allocator::frame_allocator_test();

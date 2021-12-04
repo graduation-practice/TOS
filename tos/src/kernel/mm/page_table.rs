@@ -3,7 +3,7 @@ use super::frame_allocator::{frame_alloc, frame_dealloc, Frame, FrameTracker};
 use super::space::{MapArea, MapPermission, MapType};
 use crate::arch::config::{KERNEL_STACK_TOP, MEMORY_END};
 use crate::console::print;
-use crate::kernel::process::process::KERNEL_PROCESS;
+// use crate::kernel::process::process::KERNEL_PROCESS;
 use alloc::collections::BTreeMap;
 use alloc::sync::Arc;
 use alloc::vec;
@@ -236,14 +236,15 @@ impl PageTable {
     }
 }
 
-lazy_static! {
-    /// 请通过内核进程而非此变量来映射内核栈，因为映射涉及到页框的创建和保存
-    pub static ref KERNEL_PAGE_TABLE: &'static PageTable =
-        unsafe { &*(&KERNEL_PROCESS.inner.lock().memory_set.page_table as *const PageTable) };
-}
+// lazy_static! {
+//     /// 请通过内核进程而非此变量来映射内核栈，因为映射涉及到页框的创建和保存
+//     pub static ref KERNEL_PAGE_TABLE: &'static PageTable =
+//         unsafe { &*(&KERNEL_PROCESS.inner.memory_set.page_table as *const PageTable) };
+// }
 use core::{fmt::Debug, iter::Step, mem::size_of};
 pub fn kernel_page_table() -> PageTable {
     println!("enter new kernel page table!");
+    // loop {}
     let frame = frame_alloc().unwrap();
     // use riscv::register::satp;
     //TODO 加print 不触发page fault

@@ -135,7 +135,7 @@ pub fn handle_trap(trap_frame: &mut TrapFrameImpl, scause: Scause, stval: usize)
             (spp == SPP::User && spec <= 0x0000_003f_ffff_ffff)
                 || (spp == SPP::Supervisor && spec >= 0xffff_ffc0_0000_0000)
         },
-        "spp = {:?}, sepc = {:x}",
+        "spp = {:?}, sepc = {:?}",
         trap_frame.sstatus.spp(),
         trap_frame.sepc
     );
